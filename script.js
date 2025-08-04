@@ -285,3 +285,43 @@ document.head.appendChild(style);
 
 // Inicializar partículas
 setTimeout(createParticles, 2000);
+
+const noticias = [
+  {
+    imagem: "images/img_carrossel_01.PNG",
+    titulo: "Notícia Rápida 1",
+    resumo: "Resumo da notícia número 1.",
+    link: "#"
+  },
+  {
+    imagem: "images/img_carrossel_02.PNG",
+    titulo: "Notícia Rápida 2",
+    resumo: "Resumo da notícia número 2.",
+    link: "#"
+  },
+  {
+    imagem: "images/img_carrossel_03.PNG",
+    titulo: "Notícia Rápida 3",
+    resumo: "Resumo da notícia número 3.",
+    link: "#"
+  },
+  // Adicione mais objetos aqui
+];
+
+const grid = document.getElementById('mini-news-grid');
+
+noticias.forEach(noticia => {
+  const card = document.createElement('a');
+  card.classList.add('mini-news-card');
+  card.href = noticia.link;
+
+  card.innerHTML = `
+    <img src="${noticia.imagem}" alt="${noticia.titulo}">
+    <div class="mini-news-info">
+      <h3>${noticia.titulo}</h3>
+      <p>${noticia.resumo}</p>
+    </div>
+  `;
+
+  grid.appendChild(card);
+});

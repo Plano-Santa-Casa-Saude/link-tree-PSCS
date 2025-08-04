@@ -66,6 +66,15 @@ body {
     box-shadow: var(--shadow);
     backdrop-filter: blur(10px);
 }
+/* Info Sidebar*/
+.sidebar-info {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    justify-content: center;
+    display: flex;
+
+
+}
 
 /* Scroll customizado para caso seja necessário no futuro */
 .sidebar::-webkit-scrollbar {
@@ -406,6 +415,54 @@ body {
     background: var(--accent-color);
 }
 
+/* mini-grid*/
+.mini-news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 64px;
+  margin-top: 32px;
+  margin-bottom: 8px;
+}
+
+.mini-news-card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.mini-news-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.mini-news-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.mini-news-info {
+  padding: 12px;
+}
+
+.mini-news-info h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+}
+
+.mini-news-info p {
+  font-size: 14px;
+  color: var(--text-primary);
+  opacity: 0.8;
+}
+
 
 
 /* Footer */
@@ -528,7 +585,7 @@ body {
         align-items: flex-start;
         gap: 0.5rem;
     }
-}
+
 
 /* Animações */
 @keyframes fadeInUp {
