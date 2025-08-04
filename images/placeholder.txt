@@ -1,0 +1,13 @@
+IMAGENS PARA ADICIONAR:
+
+1. carousel-1.jpg - Imagem para "Novo Projeto Revolucionário"
+2. carousel-2.jpg - Imagem para "Dicas de Produtividade" 
+3. carousel-3.jpg - Imagem para "Atualização dos Serviços"
+4. carousel-4.jpg - Imagem para "Evento Exclusivo"
+5. carousel-5.jpg - Imagem para "Tendências Tecnológicas 2024"
+
+6. 2.png - Sua foto de perfil (já adicionada!)
+
+
+
+Substitua este arquivo pelas suas imagens reais! 
