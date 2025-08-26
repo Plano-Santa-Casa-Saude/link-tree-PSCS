@@ -1,0 +1,237 @@
+/* Sidebar (Menu Lateral) */
+.sidebar {
+    width: 300px;
+    background: linear-gradient(180deg, var(--card-bg) 0%, var(--bg-secondary) 100%);
+    border-right: 2px solid var(--border-color);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+}
+
+/* Scroll customizado para caso seja necessário no futuro */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.profile-image {
+    margin-bottom: 1rem;
+}
+
+.profile-image img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 120px;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    transition: transform 0.3s ease;
+}
+
+.profile-image img:hover {
+    transform: scale(1.05);
+}
+
+.profile-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: var(--text-secondary);
+}
+
+.profile-bio {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.3;
+}
+
+/* Navegação da Sidebar */
+.sidebar-nav {
+    flex: 1;
+}
+
+.sidebar-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.sidebar-link {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--card-bg) 100%);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.8rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    animation: slideInLeft 0.6s ease forwards;
+}
+
+.sidebar-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.sidebar-link:hover::before {
+    left: 100%;
+}
+
+.sidebar-link:hover {
+    transform: translateX(8px) scale(1.02);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent-color);
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+    color: var(--bg-primary);
+}
+
+.sidebar-link:hover i {
+    color: var(--bg-primary);
+}
+
+.sidebar-link i {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    min-width: 18px;
+}
+
+.sidebar-link span {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Footer da Sidebar */
+.sidebar-footer {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border-color);
+    margin-top: auto;
+}
+
+.theme-btn {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--card-bg) 100%);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(5px);
+}
+
+.theme-btn:hover {
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+    color: var(--bg-primary);
+    transform: rotate(180deg) scale(1.1);
+    border-color: var(--accent-color);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Responsividade da Sidebar */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1.5rem 1rem;
+    }
+    
+    .sidebar-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+    
+    .profile-image img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100px;
+    }
+    
+    .profile-name {
+        font-size: 1.3rem;
+    }
+    
+    .sidebar-links {
+        gap: 0.6rem;
+    }
+    
+    .sidebar-link {
+        padding: 0.8rem;
+    }
+    
+    .sidebar-link i {
+        font-size: 1.1rem;
+    }
+    
+    .sidebar-link span {
+        font-size: 0.9rem;
+    }
+}
+
+/* Animações dos links */
+.sidebar-link:nth-child(1) { animation-delay: 0.1s; }
+.sidebar-link:nth-child(2) { animation-delay: 0.2s; }
+.sidebar-link:nth-child(3) { animation-delay: 0.3s; }
+.sidebar-link:nth-child(4) { animation-delay: 0.4s; }
+.sidebar-link:nth-child(5) { animation-delay: 0.5s; }
+.sidebar-link:nth-child(6) { animation-delay: 0.6s; }
+
+

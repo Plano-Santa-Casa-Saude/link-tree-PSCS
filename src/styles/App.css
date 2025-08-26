@@ -1,0 +1,128 @@
+/* Reset e configurações básicas */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Cores do tema azul marinho com laranja e branco */
+    --bg-primary: #0a1929;
+    --bg-secondary: #132f4c;
+    --text-primary: #ffffff;
+    --text-secondary: #f8bd1c;
+    --accent-color: #ff8c42;
+    --accent-hover: #d4af0a;
+    --border-color: #1e4976;
+    --card-bg: #132f4c;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] {
+    /* Tema azul claro */
+    --bg-primary: #e3f2fd;
+    --bg-secondary: #bbdefb;
+    --text-primary: #1565c0;
+    --text-secondary: #1976d2;
+    --accent-color: #2196f3;
+    --accent-hover: #0d47a1;
+    --border-color: #90caf9;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    transition: all 0.5s ease;
+}
+
+* {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* Layout Principal */
+.main-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Conteúdo Principal */
+.main-content {
+    flex: 1;
+    margin-left: 300px;
+    padding: 2rem;
+    padding-bottom: 4rem;
+    max-width: calc(100vw - 300px);
+}
+
+/* Seções */
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 280px;
+        max-width: calc(100vw - 280px);
+    }
+}
+
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 1.5rem 1rem;
+        padding-bottom: 4rem;
+    }
+}
+
+/* Animações */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
