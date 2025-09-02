@@ -1,0 +1,50 @@
+/* Reset e configurações básicas */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Cores do tema azul marinho com laranja e branco */
+    --bg-primary: #0a1929;
+    --bg-secondary: #132f4c;
+    --text-primary: #ffffff;
+    --text-secondary: #f8bd1c;
+    --accent-color: #ff8c42;
+    --accent-hover: #d4af0a;
+    --border-color: #1e4976;
+    --card-bg: #132f4c;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] {
+    /* Tema azul claro */
+    --bg-primary: #e3f2fd;
+    --bg-secondary: #bbdefb;
+    --text-primary: #1565c0;
+    --text-secondary: #1976d2;
+    --accent-color: #2196f3;
+    --accent-hover: #0d47a1;
+    --border-color: #90caf9;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    /*background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);*/
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+* {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+
+
+
