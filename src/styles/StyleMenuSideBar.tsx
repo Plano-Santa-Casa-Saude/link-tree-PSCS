@@ -6,9 +6,7 @@ var textSecondary = '#f8bd1c';
 var accentColor = '#ff8c42';
 var accentHover = '#d4af0a';
 var borderColor = '#1e4976';
-var cardBg = '#132f4c';
 var shadow = '0 4px 6px -1px rgba(0, 0, 0, 0.3)';
-var shadowHover = '0 10px 15px -3px rgba(0, 0, 0, 0.4)';
 
 
 

@@ -1,4 +1,5 @@
-import React,{useState} from "react";
+import {useState} from "react";
+import { useLocation } from "react-router-dom";
 
 //----------------------------------------//
 //---------------MUI---------------------//
@@ -12,12 +13,10 @@ import {
 import MuiDrawer from "@mui/material/Drawer";
 import {
   List,
-  Typography,
   CssBaseline,
   Divider,
   IconButton,
   Box,
-  Container,
 } from "@mui/material";
 
 //--------------------------------//
@@ -38,6 +37,7 @@ import HomeIcon from "@mui/icons-material/Home";
 //--------------------------------------//
 
 import FiltroBeneficiario from "./FiltroBeneficiarios";
+import DetalheBeneficiario from "../pages/Detalhado";
 
 //-------------------------------------//
 
@@ -101,9 +101,9 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MenuSideBar() {
-  const [selectedPage, setSelectedPage] = useState("home");
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -111,6 +111,14 @@ export default function MenuSideBar() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  // Determina qual conteúdo renderizar baseado na rota atual
+  const renderContent = () => {
+    if (location.pathname.startsWith("/Detalhado")) {
+      return <DetalheBeneficiario />;
+    }
+    return <FiltroBeneficiario />;
   };
 
   return (
@@ -191,7 +199,6 @@ export default function MenuSideBar() {
                 }}
               >
                 <ListItemIcon
-                  onClick={() => setSelectedPage("home")}
                   sx={{
                     minWidth: 0,
                     justifyContent: "center",
@@ -204,7 +211,6 @@ export default function MenuSideBar() {
 
                 <ListItemText
                   primary="Home"
-                  onClick={() => setSelectedPage("home")}
                   sx={{ opacity: open ? 1 : 0 }}
                 />
               </ListItemButton>
@@ -219,7 +225,7 @@ export default function MenuSideBar() {
             flexDirection: "column",
           }}
         >
-          {selectedPage === "home" && <FiltroBeneficiario />}
+          {renderContent()}
         </Box>
       </Box>
     </>

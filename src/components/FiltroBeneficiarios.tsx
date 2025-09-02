@@ -10,7 +10,7 @@ import {
   Container,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -124,7 +124,7 @@ export default function FiltroBeneficiario() {
           sx={{ border: 0 }}
           onCellDoubleClick={(params) => {
             const matricula = params.row.matricula
-            navigate(`/Detalhado`);
+            navigate(`/Detalhado/${matricula}`);
           }}
         />
       </Container>

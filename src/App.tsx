@@ -1,6 +1,5 @@
 //import { ThemeProvider } from "./contexts/ThemeContext";
 import MenuSideBar from "./components/MenuSideBar";
-import DetalheBeneficiario from "./pages/Detalhado";
 //import Sidebar from './components/Sidebar';
 //import Carousel from './components/Carousel';
 //import Footer from './components/Footer';
@@ -11,10 +10,9 @@ function App() {
   return (
     <>
       <Router>
-      
         <Routes>
           <Route path="/" element={<MenuSideBar />} />
-          <Route path="/Detalhado" element={<DetalheBeneficiario />} />
+          <Route path="/Detalhado/:matricula" element={<MenuSideBar />} />
         </Routes>
       </Router>
     </>
