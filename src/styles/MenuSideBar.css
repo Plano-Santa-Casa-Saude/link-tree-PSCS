@@ -1,0 +1,69 @@
+:root {
+  --bgPrimary: "#0a1929";
+  --bgSecondary: "#132f4c";
+  --textPrimary: "#ffffff";
+  --textSecondary: "#f8bd1c";
+  --accentColor: "#ff8c42";
+  --accentHover: "#d4af0a";
+  --borderColor: "#1e4976";
+  --cardBg: "#132f4c";
+  --shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.3)";
+  --shadowHover: "0 10px 15px -3px rgba(0, 0, 0, 0.4)";
+}
+
+.LogoSantacasa {
+  height: "auto";
+  width: "9em";
+}
+
+.ItemMenu {
+  background: linear-gradient(
+    135deg,
+    var(--bgPrimary) 0%,
+    var(--bgSecondary) 100%
+  );
+  border: 2px solid var(--bgSecondary);
+  border-radius: "12px";
+
+  text-decoration: "none";
+  color: var(--textPrimary);
+  display: "flex";
+  align-items: "center";
+  gap: "0.8rem";
+  transition: "all 0.3s ease";
+  box-shadow: var(--shadow);
+  position: "relative";
+  overflow: "hidden";
+  backdrop-filter: "blur(5px)";
+}
+
+.MenuIcon {
+  color: var(--textSecondary);
+  transition: "color 0.3s ease";
+}
+
+/* HOVER */
+.itemMenu:hover,
+.itemMenu:active {
+  color: var(--bg-primary);
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+/* ÍCONE DENTRO DO ITEM */
+.itemMenu:hover .menuIcon,
+.itemMenu:active .menuIcon {
+  color: var(--bg-primary);
+}
+
+/* ÍCONE PADRÃO */
+
+:hover .ItemMenu {
+  color: var(--bgPrimary);
+  background: linear-gradient(135deg, var(--accentColor), var(--accentHover));
+  border-radius: "10px";
+  border: 1px solid var(--borderColor);
+}
+
+
