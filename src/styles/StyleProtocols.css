@@ -1,0 +1,12 @@
+
+.session-detail{
+    border: 2px solid #4285f5;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.session-detail h2{
+    border-bottom: 2px solid #000;
+    width: auto;
+    display: flex;
+}
