@@ -2,6 +2,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button, Typography, Box, Paper, Grid, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
+import DetailBeneficiary from '../components/DetailBeneficiary.tsx'
+import Protocols from '../components/Protocols.tsx'
+import Guides from '../components/Guides.tsx'
+import Financial from '../components/Financial.tsx'
+import HistoricProtest from '../components/HistoricProtest.tsx'
+import HistoricalFiling from '../components/HistoricalFiling.tsx'
+import NipOuvidoria from '../components/NipOuvidoria.tsx'
+import Alerts from '../components/Alerts.tsx'
+import Letters from '../components/Letters.tsx'
+
 export default function DetalheBeneficiario() {
   const { matricula } = useParams();
   const navigate = useNavigate();
