@@ -17,6 +17,7 @@ import {
   Divider,
   IconButton,
   Box,
+  Tooltip,
 } from "@mui/material";
 
 //--------------------------------//
@@ -42,13 +43,11 @@ import DetalheBeneficiario from "../pages/Detalhado";
 //-------------------------------------//
 
 import {
-  MenuIconDark,
-  ItemMenuDark,
   LogoSantacasa,
 } from "../styles/StyleMenuSideBar";
 
 //LARGURA DO MENU QUANDO ELE ESTIVER ABERTO
-const drawerWidth = 250;
+const drawerWidth = 280;
 
 //ABRE O MENU
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -77,11 +76,20 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  backgroundColor: "#132f4c",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1.5),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
+  background: "linear-gradient(135deg, #0a1929 0%, #132f4c 100%)",
+  justifyContent: "space-between",
+  padding: theme.spacing(0, 2),
+  minHeight: 80,
+  position: "relative",
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "1px",
+    background: "rgba(248, 189, 28, 0.3)",
+  }
 }));
 
 //MENU
@@ -93,9 +101,9 @@ const Drawer = styled(MuiDrawer, {
   whiteSpace: "nowrap",
   boxSizing: "border-box",
   "& .MuiDrawer-paper": {
-    backgroundColor: "#132f4c", // aplica cor de fundo correta
-
+    background: "linear-gradient(180deg, #0a1929 0%, #132f4c 100%)",
     ...(open ? openedMixin(theme) : closedMixin(theme)),
+    borderRight: "1px solid rgba(248, 189, 28, 0.2)",
   },
   ...(open ? openedMixin(theme) : closedMixin(theme)),
 }));
@@ -145,7 +153,7 @@ export default function MenuSideBar() {
               edge="start"
               sx={[open && { display: "none" }]}
             >
-              <MenuIcon sx={MenuIconDark} />
+              <MenuIcon sx={{ color: '#f8bd1c', fontSize: 28 }} />
             </IconButton>
 
             <Box
@@ -156,6 +164,7 @@ export default function MenuSideBar() {
               sx={{
                 ...LogoSantacasa,
                 ...(!open && { display: "none" }),
+                filter: "brightness(1.2)",
               }}
             />
 
@@ -168,20 +177,20 @@ export default function MenuSideBar() {
               sx={[!open && { display: "none" }]}
             >
               {theme.direction === "rtl" ? (
-                <ChevronRightIcon sx={MenuIconDark} />
+                <ChevronRightIcon sx={{ color: '#f8bd1c', fontSize: 28 }} />
               ) : (
-                <ChevronLeftIcon sx={MenuIconDark} />
+                <ChevronLeftIcon sx={{ color: '#f8bd1c', fontSize: 28 }} />
               )}
             </IconButton>
           </DrawerHeader>
 
-          <Divider />
+          <Divider sx={{ borderColor: "rgba(248, 189, 28, 0.3)" }} />
 
           {/*------------------- 
             LISTA DE LINKS 
         -------------------*/}
 
-          <List sx={{ p: 1 }}>
+          <List sx={{ p: 2 }}>
             {/*------------------- 
                    LINK 
           -------------------*/}
@@ -189,40 +198,59 @@ export default function MenuSideBar() {
             <ListItem
               key="Home"
               disablePadding
-              sx={[{ display: "block" }, ItemMenuDark]} // aplica estilo no pai
+              sx={{ mb: 1 }}
             >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  px: 2.5,
-                  justifyContent: open ? "initial" : "center",
-                }}
-              >
-                <ListItemIcon
+              <Tooltip title="Página Inicial" placement="right" disableHoverListener={open}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    justifyContent: "center",
-                    mr: open ? 3 : "auto",
+                    minHeight: 56,
+                    px: 2.5,
+                    borderRadius: 2,
+                    justifyContent: open ? "initial" : "center",
+                    background: location.pathname === "/" ? "rgba(248, 189, 28, 0.15)" : "transparent",
+                    border: location.pathname === "/" ? "1px solid rgba(248, 189, 28, 0.4)" : "1px solid transparent",
+                    "&:hover": {
+                      background: "rgba(248, 189, 28, 0.1)",
+                      borderColor: "rgba(248, 189, 28, 0.6)",
+                      transform: "translateX(4px)",
+                    },
+                    transition: "all 0.2s ease-in-out",
                   }}
                 >
-                  {/* Ícone herda a cor e muda no hover do pai */}
-                  <HomeIcon sx={MenuIconDark} />
-                </ListItemIcon>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      justifyContent: "center",
+                      mr: open ? 3 : "auto",
+                      color: location.pathname === "/" ? "#f8bd1c" : "#ffffff",
+                    }}
+                  >
+                    <HomeIcon />
+                  </ListItemIcon>
 
-                <ListItemText
-                  primary="Home"
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
+                  <ListItemText
+                    primary="Página Inicial"
+                    sx={{ 
+                      opacity: open ? 1 : 0,
+                      "& .MuiTypography-root": {
+                        fontWeight: location.pathname === "/" ? 600 : 400,
+                        color: location.pathname === "/" ? "#f8bd1c" : "#ffffff",
+                      }
+                    }}
+                  />
+                </ListItemButton>
+              </Tooltip>
             </ListItem>
           </List>
         </Drawer>
+        
         <Box
+          component="main"
           sx={{
-            p: 3,
-            minHeight: "100vh", // ocupa a tela inteira
-            display: "flex",
-            flexDirection: "column",
+            flexGrow: 1,
+            background: "linear-gradient(135deg, #0a1929 0%, #132f4c 100%)",
+            minHeight: "100vh",
+            transition: "margin-left 0.2s ease-in-out",
           }}
         >
           {renderContent()}

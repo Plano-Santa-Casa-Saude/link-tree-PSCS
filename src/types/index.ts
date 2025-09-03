@@ -1,18 +1,17 @@
-export interface CarouselNews {
+// Tipos utilizados na aplicação
+export interface Beneficiario {
   id: number;
-  title: string;
-  excerpt: string;
-  date: string;
-  tags: string[];
-  image: string;
+  ativo: boolean;
+  matricula: string;
+  nome: string;
+  cpf: string;
+  plano: string;
 }
 
-export interface SidebarLink {
-  id: number;
-  href: string;
-  title: string;
-  icon?: string;
+export interface FiltroBeneficiario {
+  nome?: string;
+  matricula?: string;
+  cpf?: string;
+  abrirProtocolo?: boolean;
 }
-
-export type Theme = 'dark' | 'light';
 
