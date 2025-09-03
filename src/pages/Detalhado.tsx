@@ -2,6 +2,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button, Typography, Box, Paper, Grid, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
+import Procolos from '../components/Protocolos.tsx';
+
+
 export default function DetalheBeneficiario() {
   const { matricula } = useParams();
   const navigate = useNavigate();
@@ -56,6 +59,7 @@ export default function DetalheBeneficiario() {
             </Grid>
           </Grid>
         </Paper>
+        <Procolos matricula={matricula} />
       </Box>
     </Container>
   );
