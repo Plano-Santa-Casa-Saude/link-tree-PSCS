@@ -1,12 +1,23 @@
-
-.session-detail{
-    border: 2px solid #4285f5;
-    padding: 5px;
-    margin-top: 5px;
+.session-detail {
+  border: 2px solid #4285f5;
+  padding: 5px;
+  margin-top: 5px;
 }
 
-.session-detail h2{
-    border-bottom: 2px solid #000;
-    width: auto;
-    display: flex;
+.session-detail h2 {
+  border-bottom: 2px solid #000;
+  width: auto;
+  display: flex;
+}
+
+.modal-protocolo {
+  position: "absolute";
+  top: "50%";
+  left: "50%";
+  transform: "translate(-50%, -50%)";
+  width: 400;
+  background-color: "background.paper";
+  border: "2px solid #000";
+  box-shadow: 24;
+  padding: 4;
 }
