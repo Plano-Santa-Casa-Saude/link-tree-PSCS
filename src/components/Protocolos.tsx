@@ -102,8 +102,10 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 function Protocols(props: { matricula: any }) {
   const [rows, setRows] = useState();
+  const [loading, setLoading] = useState(false);
 
   const buscarProtocolos = async () => {
+    setLoading(true);
     try {
       const response = await fetch(
         `http://localhost:3333/protocolos/${props.matricula}`
@@ -125,23 +127,28 @@ function Protocols(props: { matricula: any }) {
     } catch (error) {
       console.error("Erro ao buscar os protocolos:", error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    buscarProtocolos();
-  });
+    if (props.matricula) {
+      buscarProtocolos();
+    }
+  }, [props.matricula]);
 
   return (
     <Paper className="session-detail">
       <h2>Protocolos</h2>
       <Container sx={{ mt: 4 }}>
         <DataGrid
-          rows={rows}
+          rows={rows || []}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
           sx={{ border: 0 }}
+          loading={loading}
         />
       </Container>
     </Paper>
