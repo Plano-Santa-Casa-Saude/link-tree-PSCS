@@ -36,7 +36,7 @@ import HomeIcon from "@mui/icons-material/Home";
 //-----------COMPONENTES-----------------//
 //--------------------------------------//
 
-import FiltroBeneficiario from "./FiltroBeneficiarios";
+import BeneficiaryFilters from "./beneficiaryFilters.tsx";
 import DetalheBeneficiario from "../pages/Detalhado";
 
 //-------------------------------------//
@@ -118,7 +118,7 @@ export default function MenuSideBar() {
     if (location.pathname.startsWith("/Detalhado")) {
       return <DetalheBeneficiario />;
     }
-    return <FiltroBeneficiario />;
+    return <BeneficiaryFilters />;
   };
 
   return (

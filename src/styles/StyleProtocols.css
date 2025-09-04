@@ -21,3 +21,26 @@
   box-shadow: 24;
   padding: 4;
 }
+
+.button-aba-modal-actived {
+    color: white;
+    background-color:hsl(196, 100%, 47%);
+    
+}
+
+.button-aba-modal-actived:hover{
+color: white;
+    background-color:hsl(196, 100%, 67%);
+}
+
+.button-aba-modal {
+    color: white;
+    background-color:hsl(196, 100%, 67%);
+    
+}
+
+.button-aba-modal:hover {
+    color: white;
+    background-color:hsl(196, 100%, 47%);
+
+}
