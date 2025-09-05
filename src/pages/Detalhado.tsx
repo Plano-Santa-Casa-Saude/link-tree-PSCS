@@ -1,4 +1,5 @@
 import React,{ useEffect , useState } from "react";
+import EnderecoResidencial from "../components/EnderecoResidencial.tsx";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button, Typography, Box, Paper, Grid, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -44,7 +45,7 @@ export default function DetalheBeneficiario() {
     try {
       const response = await fetch(`http://10.201.0.39:3333/dadosUsuario/${matricula}`);
       const data = await response.json();
-      const b = data.beneficiario[0]; ;
+      const b = data.beneficiario[0]; 
 
 
       dados = {
@@ -152,6 +153,7 @@ export default function DetalheBeneficiario() {
           </Grid>
           </Grid>
         </Paper>
+        <EnderecoResidencial ></EnderecoResidencial>
         <Procolos matricula={matricula} />
       </Box>
     </Container>

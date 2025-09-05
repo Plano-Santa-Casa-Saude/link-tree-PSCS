@@ -36,7 +36,7 @@ import HomeIcon from "@mui/icons-material/Home";
 //-----------COMPONENTES-----------------//
 //--------------------------------------//
 
-import FiltroBeneficiario from "./FiltroBeneficiarios";
+import FiltroBeneficiario from "./beneficiaryFilters";
 import DetalheBeneficiario from "../pages/Detalhado";
 
 //-------------------------------------//
