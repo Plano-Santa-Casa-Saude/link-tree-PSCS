@@ -102,11 +102,9 @@ function Financial(props: { contrato: any; matricula: any }) {
     try {
       const response = await fetch(
         `http://10.201.0.39:3333/zelus/mensalidades/${props.contrato}`
-        //`http://10.201.0.39:3333/anexos/266243`
       );
 
       const data = await response.json();
-      console.log(data); // aqui você vê o objeto completo: { total, page, limit, ... }
 
       const MensalidadesTratados = data.mensalidades.map(
         (b: any, index: number) => ({
@@ -126,7 +124,6 @@ function Financial(props: { contrato: any; matricula: any }) {
               })
             : "R$ 0,00",
           CD_MENSALIDADE: b.CD_MENS_CONTRATO,
-          //DH_CADASTRO_ANEXO: formatDate(b.DH_CADASTRO_ANEXO),
         })
       );
 

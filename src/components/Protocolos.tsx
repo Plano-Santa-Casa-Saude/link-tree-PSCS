@@ -23,7 +23,6 @@ import AttachmentsProtocol from "./attachmentsProtocol";
 import { useEffect, useState } from "react";
 import formatDate from "../utils/utils";
 //--------------------STYLE---------------------//
-import "../styles/StyleProtocols.css";
 
 const styleModal = {
   position: "absolute",
@@ -190,13 +189,11 @@ function Protocols(props: { matricula: any }) {
   const buscarProtocolos = async () => {
     setLoading(true);
     try {
-      console.log('Buscando protocolos para matrícula:', props.matricula);
       const response = await fetch(
         `http://10.201.0.39:3333/protocolos/${props.matricula}`
       );
 
       const data = await response.json();
-      console.log(data); // aqui você vê o objeto completo: { total, page, limit, ... }
 
       const protocolosComId = data.protocolos.map((b: any, index: number) => ({
         ...b,
@@ -275,6 +272,3 @@ function Protocols(props: { matricula: any }) {
 }
 
 export default Protocols;
-// function setLoading(arg0: boolean) {
-//   throw new Error("Function not implemented.");
-// }

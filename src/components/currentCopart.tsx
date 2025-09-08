@@ -41,12 +41,10 @@ function CurrentCopart(props: { contrato: string }) {
     setLoading(true);
     try {
       const response = await fetch(
-        //`http://10.201.0.39:3333/zelus/copart_vigente/${props.contrato}`
-        `http://10.201.0.39:3333/zelus/copart_vigente/4993`
+        `http://10.201.0.39:3333/zelus/copart_vigente/${props.contrato}`
       );
 
       const data = await response.json();
-      console.log("API bruta:", data);
 
       // Se vier matriz (array dentro de array), achata
       const copartArray = data.copart.flat();
@@ -60,8 +58,6 @@ function CurrentCopart(props: { contrato: string }) {
             currency: "BRL",
           }),
       }));
-
-      console.log("CopartTratado:", CopartTratado);
       setCopartVigente(CopartTratado);
     } catch (error) {
       console.error("Erro ao buscar as copart:", error);

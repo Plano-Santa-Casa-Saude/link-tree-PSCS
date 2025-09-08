@@ -124,7 +124,6 @@ const GuiaListaComponent: React.FC<GuiaListaComponentProps> = ({
     setError(null);
     
     try {
-      console.log('Buscando guias para matrícula:', matricula, 'página:', pagina);
       const response = await fetch(`${apiUrl}/${matricula}?pagina=${pagina}`, {
         method: 'GET',
         headers: {

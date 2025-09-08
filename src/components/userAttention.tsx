@@ -46,18 +46,15 @@ function UserAttention(props: { matricula: any }) {
     try {
       const response = await fetch(
         `http://10.201.0.39:3333/zelus/usuario_atencao/${props.matricula}`
-        //`http://10.201.0.39:3333/anexos/266243`
       );
 
       const data = await response.json();
-      console.log(data); // aqui você vê o objeto completo: { total, page, limit, ... }
 
       const AlertasTratado = data.usuAtencao.map((b: any, index: number) => ({
         ...b,
         id: index + 1, // ou `${b.matricula}-${index}`
         DT_INCLUSAO: formatDate(b.DT_INCLUSAO),
         DT_INATIVACAO: formatDate(b.DT_INATIVACAO),
-        //DH_CADASTRO_ANEXO: formatDate(b.DH_CADASTRO_ANEXO),
       }));
 
       // O array está em "tramites"
@@ -88,6 +85,3 @@ function UserAttention(props: { matricula: any }) {
 }
 
 export default UserAttention;
-function setLoading(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}

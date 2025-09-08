@@ -36,7 +36,6 @@ function DetailMonthlyFee(props: { mensalidade: any }) {
       );
 
       const data = await response.json();
-      console.log(data); // aqui você vê o objeto completo: { total, page, limit, ... }
 
       const ItensTratados = data.Itens.map((b: any, index: number) => ({
         ...b,

@@ -242,7 +242,6 @@ export default function DetalheBeneficiario() {
           <GuiaListaComponent
             matricula={matricula || ""}
             onGuiaClick={(nrGuia) => {
-              console.log("Guia clicada:", nrGuia);
               // Aqui você pode implementar a navegação ou modal para detalhes da guia
             }}
             apiUrl="http://10.201.0.39:3333/guia"

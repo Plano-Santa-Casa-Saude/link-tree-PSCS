@@ -50,7 +50,6 @@ export default function BeneficiaryFilters() {
       const response = await fetch(`http://10.201.0.39:3333/beneficiarios/all`);
 
       const data = await response.json();
-      console.log(data); // aqui você vê o objeto completo: { total, page, limit, ... }
 
       const beneficiariosComId = data.beneficiarios.map(
         (b: any, index: number) => ({

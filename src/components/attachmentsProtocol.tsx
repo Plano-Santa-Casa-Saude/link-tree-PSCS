@@ -62,11 +62,9 @@ function AttachmentsProtocol(props: { cdAtendCallCenter: any }) {
     try {
       const response = await fetch(
         `http://10.201.0.39:3333/anexos/${props.cdAtendCallCenter}`
-        //`http://10.201.0.39:3333/anexos/266243`
       );
 
       const data = await response.json();
-      console.log(data); // aqui você vê o objeto completo: { total, page, limit, ... }
 
       const AnexosTratados = data.anexos.map((b: any, index: number) => ({
         ...b,

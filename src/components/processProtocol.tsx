@@ -64,7 +64,6 @@ function ProcessProtocol(props: { cdAtendCallCenter: any }) {
       );
 
       const data = await response.json();
-      console.log(data); // aqui você vê o objeto completo: { total, page, limit, ... }
 
       const TramitesTratados = data.tramites.map((b: any, index: number) => ({
         ...b,
