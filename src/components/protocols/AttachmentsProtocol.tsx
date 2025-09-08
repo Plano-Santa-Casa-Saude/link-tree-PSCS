@@ -2,32 +2,33 @@
 import { Tooltip, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 //--------------------ICONES------------------------//
-import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+
 //-------------------HOOKERS----------------------//
 import { useEffect, useState } from "react";
-import formatDate from "../utils/utils";
+import formatDate from "../../utils/utils";
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-function ProcessProtocol(props: { cdAtendCallCenter: any }) {
-  const [rowsTramites, setRowsTramites] = useState();
+function AttachmentsProtocol(props: { cdAtendCallCenter: any }) {
   const [loading, setLoading] = useState(false);
+  const [rowsAnexos, setRowsAnexos] = useState();
 
   useEffect(() => {
     if (props.cdAtendCallCenter) {
-      buscarTramites();
+      buscarAnexos();
     }
   }, [props.cdAtendCallCenter]);
-  //----------------------------COLUNAS TRAMITES--------------------------------//
-  const columnsTramites = [
-    { field: "CD_ATEND_CALL_CENTER", headerName: "Cd. Tramite", width: 100 },
-    { field: "NM_AUTORIZADOR", headerName: "Nm. Autorizador", width: 260 },
-    { field: "DT_INICIO_TRAMITE", headerName: "Dt. Inicio", width: 140 },
-    { field: "DT_FINAL_TRAMITE", headerName: "Dt. Fim", width: 140 },
+
+  //----------------------------COLUNAS ANEXOS--------------------------------//
+
+  const columnsAnexos = [
+    { field: "DS_ARQUIVO", headerName: "Ds. anexo", width: 350 },
+    { field: "DH_CADASTRO_ANEXO", headerName: "Dt. Anexo", width: 160 },
     {
-      field: "DS_JUSTIFICATIVA_TRAMITE",
-      headerName: "Descrição",
-      width: 150,
+      field: "DS_CAMINHO",
+      headerName: "Anexo",
+      width: 200,
       renderCell: (params: any) => (
         <Tooltip
           placement="left-start"
@@ -42,7 +43,7 @@ function ProcessProtocol(props: { cdAtendCallCenter: any }) {
           }
         >
           <IconButton>
-            <ChatBubbleIcon
+            <FileDownloadIcon
               sx={{
                 color: params.value ? "blue" : "grey",
                 cursor: params.value ? "pointer" : "default",
@@ -54,28 +55,27 @@ function ProcessProtocol(props: { cdAtendCallCenter: any }) {
     },
   ];
 
-  //------------------------------ROTA TRAMITES----------------------------------//
+  //------------------------------ROTA ANEXOS----------------------------------//
 
-  const buscarTramites = async () => {
+  const buscarAnexos = async () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://10.201.0.39:3333/tramites/${props.cdAtendCallCenter}`
+        `http://10.201.0.39:3333/anexos/${props.cdAtendCallCenter}`
       );
 
       const data = await response.json();
 
-      const TramitesTratados = data.tramites.map((b: any, index: number) => ({
+      const AnexosTratados = data.anexos.map((b: any, index: number) => ({
         ...b,
         id: index + 1, // ou `${b.matricula}-${index}`
-        DT_INICIO_TRAMITE: formatDate(b.DT_INICIO_TRAMITE),
-        DT_FINAL_TRAMITE: formatDate(b.DT_FINAL_TRAMITE),
+        DH_CADASTRO_ANEXO: formatDate(b.DH_CADASTRO_ANEXO),
       }));
 
       // O array está em "tramites"
-      setRowsTramites(TramitesTratados);
+      setRowsAnexos(AnexosTratados);
     } catch (error) {
-      console.error("Erro ao buscar os tramites:", error);
+      console.error("Erro ao buscar os anexos:", error);
       throw error;
     } finally {
       setLoading(false);
@@ -84,8 +84,8 @@ function ProcessProtocol(props: { cdAtendCallCenter: any }) {
 
   return (
     <DataGrid
-      rows={rowsTramites}
-      columns={columnsTramites}
+      rows={rowsAnexos}
+      columns={columnsAnexos}
       initialState={{ pagination: { paginationModel } }}
       pageSizeOptions={[5, 10]}
       sx={{ border: 0 }}
@@ -94,4 +94,4 @@ function ProcessProtocol(props: { cdAtendCallCenter: any }) {
   );
 }
 
-export default ProcessProtocol;
+export default AttachmentsProtocol;

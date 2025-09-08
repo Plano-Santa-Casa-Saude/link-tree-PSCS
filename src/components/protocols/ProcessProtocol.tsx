@@ -2,33 +2,32 @@
 import { Tooltip, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 //--------------------ICONES------------------------//
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 //-------------------HOOKERS----------------------//
 import { useEffect, useState } from "react";
-import formatDate from "../utils/utils";
+import formatDate from "../../utils/utils";
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-function AttachmentsProtocol(props: { cdAtendCallCenter: any }) {
+function ProcessProtocol(props: { cdAtendCallCenter: any }) {
+  const [rowsTramites, setRowsTramites] = useState();
   const [loading, setLoading] = useState(false);
-  const [rowsAnexos, setRowsAnexos] = useState();
 
   useEffect(() => {
     if (props.cdAtendCallCenter) {
-      buscarAnexos();
+      buscarTramites();
     }
   }, [props.cdAtendCallCenter]);
-
-  //----------------------------COLUNAS ANEXOS--------------------------------//
-
-  const columnsAnexos = [
-    { field: "DS_ARQUIVO", headerName: "Ds. anexo", width: 350 },
-    { field: "DH_CADASTRO_ANEXO", headerName: "Dt. Anexo", width: 160 },
+  //----------------------------COLUNAS TRAMITES--------------------------------//
+  const columnsTramites = [
+    { field: "CD_ATEND_CALL_CENTER", headerName: "Cd. Tramite", width: 100 },
+    { field: "NM_AUTORIZADOR", headerName: "Nm. Autorizador", width: 260 },
+    { field: "DT_INICIO_TRAMITE", headerName: "Dt. Inicio", width: 140 },
+    { field: "DT_FINAL_TRAMITE", headerName: "Dt. Fim", width: 140 },
     {
-      field: "DS_CAMINHO",
-      headerName: "Anexo",
-      width: 200,
+      field: "DS_JUSTIFICATIVA_TRAMITE",
+      headerName: "Descrição",
+      width: 150,
       renderCell: (params: any) => (
         <Tooltip
           placement="left-start"
@@ -43,7 +42,7 @@ function AttachmentsProtocol(props: { cdAtendCallCenter: any }) {
           }
         >
           <IconButton>
-            <FileDownloadIcon
+            <ChatBubbleIcon
               sx={{
                 color: params.value ? "blue" : "grey",
                 cursor: params.value ? "pointer" : "default",
@@ -55,27 +54,28 @@ function AttachmentsProtocol(props: { cdAtendCallCenter: any }) {
     },
   ];
 
-  //------------------------------ROTA ANEXOS----------------------------------//
+  //------------------------------ROTA TRAMITES----------------------------------//
 
-  const buscarAnexos = async () => {
+  const buscarTramites = async () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://10.201.0.39:3333/anexos/${props.cdAtendCallCenter}`
+        `http://10.201.0.39:3333/tramites/${props.cdAtendCallCenter}`
       );
 
       const data = await response.json();
 
-      const AnexosTratados = data.anexos.map((b: any, index: number) => ({
+      const TramitesTratados = data.tramites.map((b: any, index: number) => ({
         ...b,
         id: index + 1, // ou `${b.matricula}-${index}`
-        DH_CADASTRO_ANEXO: formatDate(b.DH_CADASTRO_ANEXO),
+        DT_INICIO_TRAMITE: formatDate(b.DT_INICIO_TRAMITE),
+        DT_FINAL_TRAMITE: formatDate(b.DT_FINAL_TRAMITE),
       }));
 
       // O array está em "tramites"
-      setRowsAnexos(AnexosTratados);
+      setRowsTramites(TramitesTratados);
     } catch (error) {
-      console.error("Erro ao buscar os anexos:", error);
+      console.error("Erro ao buscar os tramites:", error);
       throw error;
     } finally {
       setLoading(false);
@@ -84,8 +84,8 @@ function AttachmentsProtocol(props: { cdAtendCallCenter: any }) {
 
   return (
     <DataGrid
-      rows={rowsAnexos}
-      columns={columnsAnexos}
+      rows={rowsTramites}
+      columns={columnsTramites}
       initialState={{ pagination: { paginationModel } }}
       pageSizeOptions={[5, 10]}
       sx={{ border: 0 }}
@@ -94,4 +94,4 @@ function AttachmentsProtocol(props: { cdAtendCallCenter: any }) {
   );
 }
 
-export default AttachmentsProtocol;
+export default ProcessProtocol;

@@ -7,7 +7,6 @@ import {
   Box,
   FormControl,
   InputLabel,
-  NativeSelect,
   Grid,
   Select,
   MenuItem,
@@ -17,10 +16,10 @@ import { DataGrid } from "@mui/x-data-grid";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 //-------------------HOOKERS----------------------//
 import { useEffect, useState } from "react";
-import formatDate from "../utils/utils";
+import formatDate from "../../utils/utils";
 //------------------COMPONENTES-------------------//
-import DetailMonthlyFee from "./detailMonthlyFee";
-import CurrentCopart from "./currentCopart";
+import DetailMonthlyFee from "./DetailMonthlyFee";
+import CurrentCopart from "./CurrentCopart";
 
 const paginationModel = { page: 0, pageSize: 5 };
 
@@ -62,9 +61,6 @@ function Financial(props: { contrato: any; matricula: any }) {
   const handleOpenModalCopart = () => setOpenModalCopart(true);
   const handleCloseModalImpostoRenda = () => setOpenModalImpostoRenda(false);
   const handleOpenModalImpostoRenda = () => setOpenModalImpostoRenda(true);
-  const handleChangeImpostoRenda = (AnoInput: any) => {
-    setAnoImpostoRenda(AnoInput);
-  };
   //----------------------------COLUNAS MENSALIDADES--------------------------------//
 
   const columnsMensalidades = [

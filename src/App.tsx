@@ -1,4 +1,4 @@
-import MenuSideBar from "./components/MenuSideBar";
+import { MenuSideBar } from "./components";
 import "./styles/App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 

@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button, Typography, Box, Paper, Grid, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import UserAttention from '../components/userAttention'
-import Procolos from "../components/Protocolos.tsx";
-import Financial from "../components/Financial.tsx";
-import GuiaListaComponent from "../components/GuiaListaComponent";
-import Letters from "../components/Letters"
-
-import Campo from "../components/Campo.tsx";
+import { 
+  UserAttention, 
+  Protocols, 
+  Financial, 
+  GuiaListaComponent, 
+  Letters, 
+  Campo 
+} from "../components";
 
 export default function DetalheBeneficiario() {
   const { matricula } = useParams();
@@ -237,11 +238,11 @@ export default function DetalheBeneficiario() {
             </Grid>
           </Grid>
         </Paper>
-        <Procolos matricula={matricula} />
+        <Protocols matricula={matricula} />
         <Box sx={{ mt: 4 }}>
           <GuiaListaComponent
             matricula={matricula || ""}
-            onGuiaClick={(nrGuia) => {
+            onGuiaClick={(_nrGuia) => {
               // Aqui você pode implementar a navegação ou modal para detalhes da guia
             }}
             apiUrl="http://10.201.0.39:3333/guia"

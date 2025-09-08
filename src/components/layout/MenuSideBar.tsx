@@ -36,8 +36,8 @@ import HomeIcon from "@mui/icons-material/Home";
 //-----------COMPONENTES-----------------//
 //--------------------------------------//
 
-import FiltroBeneficiario from "./beneficiaryFilters";
-import DetalheBeneficiario from "../pages/Detalhado";
+import { BeneficiaryFilters } from "../beneficiary";
+import DetalheBeneficiario from "../../pages/Detalhado";
 
 //-------------------------------------//
 
@@ -45,7 +45,7 @@ import {
   MenuIconDark,
   ItemMenuDark,
   LogoSantacasa,
-} from "../styles/StyleMenuSideBar";
+} from "../../styles/StyleMenuSideBar";
 
 //LARGURA DO MENU QUANDO ELE ESTIVER ABERTO
 const drawerWidth = 250;
@@ -118,7 +118,7 @@ export default function MenuSideBar() {
     if (location.pathname.startsWith("/Detalhado")) {
       return <DetalheBeneficiario />;
     }
-    return <FiltroBeneficiario />;
+    return <BeneficiaryFilters />;
   };
 
   return (

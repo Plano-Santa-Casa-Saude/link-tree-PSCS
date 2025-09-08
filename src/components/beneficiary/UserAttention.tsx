@@ -1,23 +1,13 @@
 //-------------------MUI----------------------//
-import { Paper, Typography, Grid, Button } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 //-------------------HOOKERS----------------------//
 import { useEffect, useState } from "react";
-import formatDate from "../utils/utils";
+import formatDate from "../../utils/utils";
 import { DataGrid } from "@mui/x-data-grid";
 const paginationModel = { page: 0, pageSize: 5 };
 
-const styleModal = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  border: "none",
-  boxShadow: 24,
-  p: 4,
-};
 
-function UserAttention(props: { matricula: any }) {
+function UserAttention(props: { matricula: string | undefined }) {
   const [rowsAlertas, setRowsAlertas] = useState();
   const [loading, setLoading] = useState(false);
 

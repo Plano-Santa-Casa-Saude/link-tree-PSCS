@@ -17,11 +17,11 @@ import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 //-------------------COMPONENTES---------------------//
-import ProcessProtocol from "./processProtocol";
-import AttachmentsProtocol from "./attachmentsProtocol";
+import ProcessProtocol from "./ProcessProtocol";
+import AttachmentsProtocol from "./AttachmentsProtocol";
 //-------------------HOOKERS----------------------//
 import { useEffect, useState } from "react";
-import formatDate from "../utils/utils";
+import formatDate from "../../utils/utils";
 //--------------------STYLE---------------------//
 
 const styleModal = {
@@ -57,7 +57,7 @@ function Protocols(props: { matricula: any }) {
     setCdProtocolos(cdAtendCallCenter);
     setOpenModalProtocolos(true);
   };
-  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChangeTab = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 

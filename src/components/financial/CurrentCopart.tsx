@@ -2,7 +2,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 //-------------------HOOKERS----------------------//
 import { useEffect, useState } from "react";
-import formatDate from "../utils/utils";
+import formatDate from "../../utils/utils";
 
 type Copart = {
   CD_CONTRATO: number;
