@@ -3,9 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button, Typography, Box, Paper, Grid, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import Procolos from '../components/Protocolos.tsx';
+import Procolos from "../components/Protocolos.tsx";
 import Financial from "../components/Financial.tsx";
-import GuiaListaComponent from '../components/GuiaListaComponent';
+import GuiaListaComponent from "../components/GuiaListaComponent";
 
 import Campo from "../components/Campo.tsx";
 
@@ -77,7 +77,7 @@ export default function DetalheBeneficiario() {
         telefone: b.NR_TELEFONE,
         celular: b.NR_CELULAR,
       };
-      localStorage.setItem('contrato', dados.codigoContrato.toString())
+      localStorage.setItem("contrato", dados.codigoContrato.toString());
       setDadosPessoais(dados);
     } catch (error) {
       console.error("Erro ao buscar dados do beneficiário:", error);
@@ -234,6 +234,17 @@ export default function DetalheBeneficiario() {
           </Grid>
         </Paper>
         <Procolos matricula={matricula} />
+        <Box sx={{ mt: 4 }}>
+          <GuiaListaComponent
+            matricula={matricula || ""}
+            onGuiaClick={(nrGuia) => {
+              console.log("Guia clicada:", nrGuia);
+              // Aqui você pode implementar a navegação ou modal para detalhes da guia
+            }}
+            apiUrl="http://localhost:3333/guia"
+          />
+        </Box>
+        <Financial contrato={dadosPessoais?.codigoContrato} matricula={matricula} />
       </Box>
     </Container>
   );

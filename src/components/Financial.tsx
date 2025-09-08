@@ -1,5 +1,17 @@
 //-------------------MUI----------------------//
-import { Paper, Modal, Button, Typography, Box } from "@mui/material";
+import {
+  Paper,
+  Modal,
+  Button,
+  Typography,
+  Box,
+  FormControl,
+  InputLabel,
+  NativeSelect,
+  Grid,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 //--------------------ICONES------------------------//
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -23,22 +35,16 @@ const styleModal = {
   p: 4,
 };
 
-type Copart = {
-  CD_CONTRATO: number;
-  CD_PLANO: number;
-  DS_PLANO: string;
-  CD_GRUPO_PROCEDIMENTO: number;
-  DS_GRUPO_PROCEDIMENTO: string;
-  DT_VIGENCIA: string;
-  VALOR: number;
-  id: number;
-};
+function Financial(props: { contrato: any,matricula: any }) {
+  const anoAtual = new Date().getFullYear();
+  const anos = Array.from({ length: 6 }, (_, i) => anoAtual - i);
 
-function Financial(props: { contrato: any }) {
   const [loading, setLoading] = useState(false);
   const [rowsMensalidades, setRowsMensalidades] = useState();
   const [openModalMensalidades, setOpenModalMensalidades] = useState(false);
   const [openModalCopart, setOpenModalCopart] = useState(false);
+  const [openModalImpostoRenda, setOpenModalImpostoRenda] = useState(false);
+  const [anoImpostoRenda, setAnoImpostoRenda] = useState(anoAtual);
   const [CdMensalidade, setCdMensalidade] = useState("");
 
   useEffect(() => {
@@ -54,7 +60,11 @@ function Financial(props: { contrato: any }) {
   };
   const handleCloseModalCopart = () => setOpenModalCopart(false);
   const handleOpenModalCopart = () => setOpenModalCopart(true);
-
+  const handleCloseModalImpostoRenda = () => setOpenModalImpostoRenda(false);
+  const handleOpenModalImpostoRenda = () => setOpenModalImpostoRenda(true);
+  const handleChangeImpostoRenda = (AnoInput: any) => {
+    setAnoImpostoRenda(AnoInput);
+  };
   //----------------------------COLUNAS MENSALIDADES--------------------------------//
 
   const columnsMensalidades = [
@@ -130,26 +140,30 @@ function Financial(props: { contrato: any }) {
     }
   };
 
-  
-
   return (
     <>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Financeiro
         </Typography>
-        <Button onClick={handleOpenModalCopart} variant="contained">
-          Coparticipaçao Vigente
-        </Button>
-        <Button onClick={handleOpenModalCopart} variant="contained">
-          Imposto de Renda
-        </Button>
+        <Grid container sx={{ marginTop: 2 }} rowSpacing={1} columnSpacing={1}>
+          <Grid size="auto">
+            <Button onClick={handleOpenModalCopart} variant="contained">
+              Coparticipaçao Vigente
+            </Button>
+          </Grid>
+          <Grid size="auto">
+            <Button onClick={handleOpenModalImpostoRenda} variant="contained">
+              Imposto de Renda
+            </Button>
+          </Grid>
+        </Grid>
         <DataGrid
           rows={rowsMensalidades}
           columns={columnsMensalidades}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
-          sx={{ border: 0 }}
+          sx={{ border: 0, marginTop: 2 }}
           loading={loading}
         />
       </Paper>
@@ -159,7 +173,7 @@ function Financial(props: { contrato: any }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={{ ...styleModal, width: "150vh" }}>
+        <Box sx={{ ...styleModal, width: "70%" }}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Mensalidade - {CdMensalidade}
           </Typography>
@@ -179,11 +193,36 @@ function Financial(props: { contrato: any }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={{ ...styleModal, width: "135vh" }}>
+        <Box sx={{ ...styleModal, width: "60%" }}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Coparticipação vigente
           </Typography>
           <CurrentCopart contrato={props.contrato} />
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openModalImpostoRenda}
+        onClose={handleCloseModalImpostoRenda}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{ ...styleModal, width: "30%" }}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Imposto de Renda
+          </Typography>
+
+          <FormControl sx={{ marginTop: 3, marginBottom: 3 }} fullWidth>
+            <InputLabel id="ano-label">Ano</InputLabel>
+            <Select labelId="ano-label" id="ano-select"  onChange={(e) => setAnoImpostoRenda(Number(e.target.value))} label="Ano">
+              {anos.map((ano) => (
+                <MenuItem key={ano} value={ano}>
+                  {ano}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button href={`http://10.201.0.20/mvsaudeweb/ServletBoleto?portal=true&tpBoleto=6&pMesIni=01/01/${anoImpostoRenda}&pMesFim=31/12/${anoImpostoRenda}&cdMatricula=${props.matricula}&cdMultiEmpresa=1&pAno=${anoImpostoRenda}`} target="_blank" variant="contained">Buscar</Button>
         </Box>
       </Modal>
     </>
