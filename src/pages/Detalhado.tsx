@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button, Typography, Box, Paper, Grid, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
+import UserAttention from '../components/userAttention'
 import Procolos from "../components/Protocolos.tsx";
 import Financial from "../components/Financial.tsx";
 import GuiaListaComponent from "../components/GuiaListaComponent";
@@ -102,6 +103,8 @@ export default function DetalheBeneficiario() {
         >
           Voltar
         </Button>
+
+        <UserAttention matricula={matricula} />
 
         <Paper elevation={3} sx={{ p: 4 }}>
           <Grid container spacing={3} sx={{ mt: 2 }}>
