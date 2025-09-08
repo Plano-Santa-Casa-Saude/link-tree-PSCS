@@ -3,6 +3,7 @@ import { Button, Typography, Box, Paper, Grid, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import Procolos from '../components/Protocolos.tsx';
+import GuiaListaComponent from '../components/GuiaListaComponent';
 
 
 export default function DetalheBeneficiario() {
@@ -60,6 +61,18 @@ export default function DetalheBeneficiario() {
           </Grid>
         </Paper>
         <Procolos matricula={matricula} />
+        
+        {/* Componente de Lista de Guias */}
+        <Box sx={{ mt: 4 }}>
+          <GuiaListaComponent 
+            matricula={matricula || ''} 
+            onGuiaClick={(nrGuia) => {
+              console.log('Guia clicada:', nrGuia);
+              // Aqui você pode implementar a navegação ou modal para detalhes da guia
+            }}
+            apiUrl="http://localhost:3333/guia"
+          />
+        </Box>
       </Box>
     </Container>
   );
