@@ -42,10 +42,9 @@ const paginationModel = { page: 0, pageSize: 5 };
 function Protocols(props: { matricula: any }) {
   const [loading, setLoading] = useState(false);
   const [rowsProtocolos, setRowsProtocolos] = useState();
-  const [open, setOpen] = useState(false);
+  const [openModalProtocolos, setOpenModalProtocolos] = useState(false);
   const [CdProtocolos, setCdProtocolos] = useState("");
   const [tabValue, setTabValue] = useState(0);
-  const [displayTramites, setDisplayTramites] = useState(true);
 
   useEffect(() => {
     if (props.matricula) {
@@ -54,11 +53,10 @@ function Protocols(props: { matricula: any }) {
   }, [props.matricula]);
 
   //   const handleOpenModalProtocolos = () => setOpen(true);
-  const handleCloseModalProtocolos = () => setOpen(false);
+  const handleCloseModalProtocolos = () => setOpenModalProtocolos(false);
   const handleOpenModalProtocolos = (cdAtendCallCenter: string) => {
     setCdProtocolos(cdAtendCallCenter);
-    setDisplayTramites(true);
-    setOpen(true);
+    setOpenModalProtocolos(true);
   };
   const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -193,7 +191,7 @@ function Protocols(props: { matricula: any }) {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3333/protocolos/${props.matricula}`
+        `http://10.201.0.39:3333/protocolos/${props.matricula}`
       );
 
       const data = await response.json();
@@ -219,8 +217,10 @@ function Protocols(props: { matricula: any }) {
 
   return (
     <>
-      <Paper className="session-detail">
-        <h2>Protocolos</h2>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Protocolos
+        </Typography>
         <Container sx={{ mt: 4 }}>
           <DataGrid
             rows={rowsProtocolos || []}
@@ -234,7 +234,7 @@ function Protocols(props: { matricula: any }) {
       </Paper>
 
       <Modal
-        open={open}
+        open={openModalProtocolos}
         onClose={handleCloseModalProtocolos}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
