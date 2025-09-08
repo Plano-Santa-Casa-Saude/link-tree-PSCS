@@ -192,8 +192,9 @@ function Protocols(props: { matricula: any }) {
   const buscarProtocolos = async () => {
     setLoading(true);
     try {
+      console.log('Buscando protocolos para matrícula:', props.matricula);
       const response = await fetch(
-        `http://localhost:3333/protocolos/${props.matricula}`
+        `http://10.201.0.39:3333/protocolos/${props.matricula}`
       );
 
       const data = await response.json();

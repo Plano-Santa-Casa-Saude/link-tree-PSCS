@@ -37,7 +37,7 @@ interface GuiaListaComponentProps {
 const GuiaListaComponent: React.FC<GuiaListaComponentProps> = ({ 
   matricula, 
   onGuiaClick,
-  apiUrl = 'http://localhost:3333/guia'
+  apiUrl = 'http://10.201.0.39:3333/guia'
 }) => {
   // Estados locais
   const [guias, setGuias] = useState<Guia[]>([]);
@@ -124,6 +124,7 @@ const GuiaListaComponent: React.FC<GuiaListaComponentProps> = ({
     setError(null);
     
     try {
+      console.log('Buscando guias para matrícula:', matricula, 'página:', pagina);
       const response = await fetch(`${apiUrl}/${matricula}?pagina=${pagina}`, {
         method: 'GET',
         headers: {

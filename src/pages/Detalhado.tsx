@@ -43,6 +43,7 @@ export default function DetalheBeneficiario() {
    const buscarDados = async () => {
     let dados: dadosPessoais;
     try {
+      console.log('Buscando dados para matrícula:', matricula);
       const response = await fetch(`http://10.201.0.39:3333/dadosUsuario/${matricula}`);
       const data = await response.json();
       const b = data.beneficiario[0]; ;
@@ -163,7 +164,7 @@ export default function DetalheBeneficiario() {
               console.log('Guia clicada:', nrGuia);
               // Aqui você pode implementar a navegação ou modal para detalhes da guia
             }}
-            apiUrl="http://localhost:3333/guia"
+            apiUrl="http://10.201.0.39:3333/guia"
           />
         </Box>
       </Box>

@@ -60,7 +60,7 @@ function ProcessProtocol(props: { cdAtendCallCenter: any }) {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3333/tramites/${props.cdAtendCallCenter}`
+        `http://10.201.0.39:3333/tramites/${props.cdAtendCallCenter}`
       );
 
       const data = await response.json();
