@@ -39,7 +39,7 @@ const columns = [
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-export default function FiltroBeneficiario() {
+export default function BeneficiaryFilters() {
   const [rows, setRows] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
