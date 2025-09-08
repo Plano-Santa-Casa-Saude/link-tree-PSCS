@@ -61,8 +61,8 @@ function AttachmentsProtocol(props: { cdAtendCallCenter: any }) {
     setLoading(true);
     try {
       const response = await fetch(
-        //`http://10.201.0.39:3333/anexos/${cdAtendCallCenter}`
-        `http://10.201.0.39:3333/anexos/266243`
+        `http://10.201.0.39:3333/anexos/${props.cdAtendCallCenter}`
+        //`http://10.201.0.39:3333/anexos/266243`
       );
 
       const data = await response.json();
