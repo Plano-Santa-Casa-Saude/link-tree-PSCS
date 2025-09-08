@@ -6,6 +6,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Procolos from "../components/Protocolos.tsx";
 import Financial from "../components/Financial.tsx";
 import GuiaListaComponent from "../components/GuiaListaComponent";
+import Letters from "../components/Letters"
 
 import Campo from "../components/Campo.tsx";
 
@@ -245,6 +246,7 @@ export default function DetalheBeneficiario() {
           />
         </Box>
         <Financial contrato={dadosPessoais?.codigoContrato} matricula={matricula} />
+        <Letters />
       </Box>
     </Container>
   );

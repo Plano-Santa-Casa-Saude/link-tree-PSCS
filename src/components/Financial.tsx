@@ -35,7 +35,7 @@ const styleModal = {
   p: 4,
 };
 
-function Financial(props: { contrato: any,matricula: any }) {
+function Financial(props: { contrato: any; matricula: any }) {
   const anoAtual = new Date().getFullYear();
   const anos = Array.from({ length: 6 }, (_, i) => anoAtual - i);
 
@@ -214,7 +214,12 @@ function Financial(props: { contrato: any,matricula: any }) {
 
           <FormControl sx={{ marginTop: 3, marginBottom: 3 }} fullWidth>
             <InputLabel id="ano-label">Ano</InputLabel>
-            <Select labelId="ano-label" id="ano-select"  onChange={(e) => setAnoImpostoRenda(Number(e.target.value))} label="Ano">
+            <Select
+              labelId="ano-label"
+              id="ano-select"
+              onChange={(e) => setAnoImpostoRenda(Number(e.target.value))}
+              label="Ano"
+            >
               {anos.map((ano) => (
                 <MenuItem key={ano} value={ano}>
                   {ano}
@@ -222,7 +227,15 @@ function Financial(props: { contrato: any,matricula: any }) {
               ))}
             </Select>
           </FormControl>
-          <Button href={`http://10.201.0.20/mvsaudeweb/ServletBoleto?portal=true&tpBoleto=6&pMesIni=01/01/${anoImpostoRenda}&pMesFim=31/12/${anoImpostoRenda}&cdMatricula=${props.matricula}&cdMultiEmpresa=1&pAno=${anoImpostoRenda}`} target="_blank" variant="contained">Buscar</Button>
+          <Grid>
+            <Button
+              href={`http://10.201.0.20/mvsaudeweb/ServletBoleto?portal=true&tpBoleto=6&pMesIni=01/01/${anoImpostoRenda}&pMesFim=31/12/${anoImpostoRenda}&cdMatricula=${props.matricula}&cdMultiEmpresa=1&pAno=${anoImpostoRenda}`}
+              target="_blank"
+              variant="contained"
+            >
+              Buscar
+            </Button>
+          </Grid>
         </Box>
       </Modal>
     </>
