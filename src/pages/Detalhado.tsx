@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Button, Typography, Box, Paper, Grid, Container } from "@mui/material";
+import { Button, Typography, Box, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import {
@@ -9,9 +9,11 @@ import {
   Financial,
   GuiaListaComponent,
   Letters,
+  DetailBeneficiary,
+  AddressBeneficiary,
+  DetailContract,
+  AlertaComponent,
 } from "../components";
-import { AlertaComponent } from "../components";
-import DetailBeneficiary from "../components/beneficiary/DetailBeneficiary";
 
 export default function DetalheBeneficiario() {
   const { matricula } = useParams();
@@ -54,6 +56,8 @@ export default function DetalheBeneficiario() {
           </Typography>
         </Box>
         
+        <AddressBeneficiary matricula={matricula} />
+        <DetailContract contrato={localStorage.contrato} />
         <Protocols matricula={matricula} />
         <Box sx={{ mt: 4 }}>
           <GuiaListaComponent
@@ -64,10 +68,7 @@ export default function DetalheBeneficiario() {
             apiUrl="http://10.201.0.39:3333/guia"
           />
         </Box>
-        <Financial
-          contrato={localStorage.contrato}
-          matricula={matricula}
-        />
+        <Financial contrato={localStorage.contrato} matricula={matricula} />
         <Letters />
         
         {/* Modal de Alertas */}
