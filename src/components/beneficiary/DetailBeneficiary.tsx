@@ -1,11 +1,8 @@
 import { Paper, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { Campo } from "../common";
 
-
-export default function DetailBeneficiary(props:{matricula:any}) {
-  
+export default function DetailBeneficiary(props: { matricula: any }) {
   const [dadosPessoais, setDadosPessoais] = useState<dadosPessoais | null>(
     null
   );
@@ -18,7 +15,7 @@ export default function DetailBeneficiary(props:{matricula:any}) {
     plano: string;
     tipoBeneficiario: string;
     tipoContrato: string;
-    //dataAdesao: string;
+    dataAdesao: string;
     tipoAcomodacao: string;
     snAtivo: string;
     motivoCancelamento: string;
@@ -51,7 +48,7 @@ export default function DetailBeneficiary(props:{matricula:any}) {
         plano: b.DS_PLANO,
         tipoBeneficiario: b.TP_USUARIO,
         tipoContrato: b.TP_CONTRATO,
-        //dataAdesao: b.DT_ADESAO,
+        dataAdesao: b.ADESAO,
         tipoAcomodacao: b.DS_TIP_ACOMODACAO,
         snAtivo: b.SN_ATIVO,
         motivoCancelamento: b.MOT_DESLIGAMENTO,
@@ -82,27 +79,27 @@ export default function DetailBeneficiary(props:{matricula:any}) {
 
   return (
     <Paper elevation={3} sx={{ p: 4 }}>
-      <Grid container spacing={3} sx={{ mt: 2 }}>
-        <Grid size={{ xs: 12 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            Detalhes do Beneficiário
-          </Typography>
-          <Typography variant="h5" gutterBottom align="center">
-            Informações Pessoais
-          </Typography>
-        </Grid>
-        <Grid size={{ xs: 12, md: 4 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Dados Pessoais
+      </Typography>
+      <Grid container rowSpacing={1} columnSpacing={2} sx={{ mt: 2 }}>
+        <Grid size={3}>
           <Campo label="Matrícula" valor={props.matricula || "N/A"} />
+        </Grid>
+        <Grid size={2}>
+          <Campo label="CPF" valor={dadosPessoais?.cpf || ""}></Campo>
+        </Grid>
+        <Grid size={7}></Grid>
+        <Grid size={4}>
           <Campo label="Nome" valor={dadosPessoais?.nome || "N/A"} />
+        </Grid>
+        <Grid size={4}>
           <Campo
             label="Nome Social"
             valor={dadosPessoais?.nomeSocial || ""}
           ></Campo>
-          <Campo
-            label="Nome da Mãe"
-            valor={dadosPessoais?.nomeMae || ""}
-          ></Campo>
-          <Campo label="CPF" valor={dadosPessoais?.cpf || ""}></Campo>
+        </Grid>
+        <Grid size={3}>
           <Campo
             label="Sexo"
             valor={
@@ -113,6 +110,66 @@ export default function DetailBeneficiary(props:{matricula:any}) {
                 : ""
             }
           ></Campo>
+        </Grid>
+        <Grid size={4}>
+          <Campo label="Plano" valor={dadosPessoais?.plano || ""}></Campo>
+        </Grid>
+        <Grid size={2}>
+          <Campo
+            label="Tipo beneficiário"
+            valor={
+              dadosPessoais?.tipoBeneficiario === "T" ? "TITULAR" : "DEPENDENTE"
+            }
+          ></Campo>
+        </Grid>
+        <Grid size={2}>
+          <Campo
+            label="Tipo Contrato"
+            valor={dadosPessoais?.tipoContrato || ""}
+          ></Campo>
+        </Grid>
+        <Grid size={2}>
+          <Campo
+            label="Data adesão:"
+            valor={
+              dadosPessoais?.dataAdesao
+                ? new Date(dadosPessoais.dataAdesao).toLocaleDateString("pt-BR")
+                : ""
+            }
+          ></Campo>
+        </Grid>
+        <Grid size={3}>
+          <Campo
+            label="Tipo Acomodação"
+            valor={dadosPessoais?.tipoAcomodacao || ""}
+          ></Campo>
+        </Grid>
+        <Grid size={1}>
+          <Campo
+            label="Ativo"
+            valor={dadosPessoais?.snAtivo === "S" ? "Sim" : "Não"}
+          ></Campo>
+        </Grid>
+        <Grid size={4}>
+          <Campo
+            label="Motivo do Cancelamento"
+            valor={dadosPessoais?.motivoCancelamento || ""}
+          ></Campo>
+        </Grid>
+        <Grid size={2}>
+          <Campo
+            label="Data Desligamento"
+            valor={
+              dadosPessoais?.dataDesligamento
+                ? new Date(dadosPessoais.dataDesligamento).toLocaleDateString(
+                    "pt-BR"
+                  )
+                : ""
+            }
+          ></Campo>
+        </Grid>
+        <Grid size={2}></Grid>
+        <Grid size={2}>
           <Campo
             label="Data de Nascimento"
             valor={
@@ -124,80 +181,57 @@ export default function DetailBeneficiary(props:{matricula:any}) {
             }
           ></Campo>
         </Grid>
-
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid size={1}>
           <Campo label="Idade" valor={dadosPessoais?.idade || ""}></Campo>
-          <Campo label="Plano" valor={dadosPessoais?.plano || ""}></Campo>
+        </Grid>
+        <Grid size={4}>
           <Campo
-            label="Satus"
-            valor={dadosPessoais?.snAtivo === "S" ? "ATIVO" : "INATIVO"}
-          ></Campo>
-          <Campo
-            label="Tipo beneficiário"
-            valor={
-              dadosPessoais?.tipoBeneficiario === "T" ? "TITULAR" : "DEPENDENTE"
-            }
-          ></Campo>
-          <Campo
-            label="Suspenso"
-            valor={dadosPessoais?.snSuspenso === "S" ? "SIM" : "NÃO"}
-          ></Campo>
-          <Campo
-            label="Motivo do Cancelamento"
-            valor={dadosPessoais?.motivoCancelamento || ""}
-          ></Campo>
-          <Campo
-            label="Data do Cancelamento"
-            valor={
-              dadosPessoais?.dataDesligamento
-                ? new Date(dadosPessoais.dataDesligamento).toLocaleDateString(
-                    "pt-BR"
-                  )
-                : ""
-            }
+            label="Nome da Mãe"
+            valor={dadosPessoais?.nomeMae || ""}
           ></Campo>
         </Grid>
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Campo
-            label="Código do Contrato"
-            valor={dadosPessoais?.codigoContrato || ""}
-          ></Campo>
-          <Campo
-            label="Nome da Empresa"
-            valor={dadosPessoais?.nomeEmpresa || ""}
-          ></Campo>
-          <Campo
-            label="Tipo Contrato"
-            valor={dadosPessoais?.tipoContrato || ""}
-          ></Campo>
-          <Campo
-            label="Tipo Acomodação"
-            valor={dadosPessoais?.tipoAcomodacao || ""}
-          ></Campo>
+        <Grid size={4}>
           <Campo
             label="Possui Coparticipação"
             valor={dadosPessoais?.possuiCoparticipacao === "S" ? "SIM" : "NÃO"}
           ></Campo>
         </Grid>
-        <Grid size={{ xs: 12 }}>
-          <Typography variant="h5" component="h1" gutterBottom align="center">
-            Dados de contato
-          </Typography>
+        <Grid size={5}>
+          <Campo
+            label="Nome da Empresa"
+            valor={dadosPessoais?.nomeEmpresa || ""}
+          ></Campo>
         </Grid>
-        <Grid container display={"flex"} flex={1}>
-          <Grid size={{ xs: 12, md: 4 }}>
+        <Grid size={2}>
+          <Campo
+            label="Código do Contrato"
+            valor={dadosPessoais?.codigoContrato || ""}
+          ></Campo>
+        </Grid>
+        <Grid size={5}></Grid>
+        <Grid size={2}>
+          <Campo label="Carência" valor="Não"></Campo>
+        </Grid>
+        <Grid size={5}>
+          <Campo
+            label="Suspenso"
+            valor={dadosPessoais?.snSuspenso === "S" ? "Sim" : "Não"}
+          ></Campo>
+        </Grid>
+        <Grid size={5} ></Grid>
+        <Grid size={4} >
             <Campo label="Email" valor={dadosPessoais?.email || ""}></Campo>
-          </Grid>
-          <Grid size={{ xs: 12, md: 4 }}>
+        </Grid>
+        <Grid size={3} >
             <Campo
               label="Telefone"
               valor={dadosPessoais?.telefone || ""}
             ></Campo>
-          </Grid>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <Campo label="Celular" valor={dadosPessoais?.celular || ""}></Campo>
-          </Grid>
         </Grid>
+        <Grid size={3} >
+            <Campo label="Celular" valor={dadosPessoais?.celular || ""}></Campo>
+        </Grid>
+        <Grid size={2} ></Grid>
       </Grid>
     </Paper>
   );

@@ -9,8 +9,10 @@ import {
   Financial,
   GuiaListaComponent,
   Letters,
+  DetailBeneficiary,
+  AddressBeneficiary,
+  DetailContract,
 } from "../components";
-import DetailBeneficiary from "../components/beneficiary/DetailBeneficiary";
 
 export default function DetalheBeneficiario() {
   const { matricula } = useParams();
@@ -34,6 +36,8 @@ export default function DetalheBeneficiario() {
         </Button>
         <UserAttention matricula={matricula} />
         <DetailBeneficiary matricula={matricula} />
+        <AddressBeneficiary matricula={matricula} />
+        <DetailContract contrato={localStorage.contrato} />
         <Protocols matricula={matricula} />
         <Box sx={{ mt: 4 }}>
           <GuiaListaComponent
@@ -44,10 +48,7 @@ export default function DetalheBeneficiario() {
             apiUrl="http://10.201.0.39:3333/guia"
           />
         </Box>
-        <Financial
-          contrato={localStorage.contrato}
-          matricula={matricula}
-        />
+        <Financial contrato={localStorage.contrato} matricula={matricula} />
         <Letters />
       </Box>
     </Container>
