@@ -10,10 +10,12 @@ import {
   GuiaListaComponent,
   Letters,
 } from "../components";
+import { AlertaComponent } from "../components";
 import DetailBeneficiary from "../components/beneficiary/DetailBeneficiary";
 
 export default function DetalheBeneficiario() {
   const { matricula } = useParams();
+  const [mostrarModalAlertas, setMostrarModalAlertas] = useState(false);
 
   const navigate = useNavigate();
 
@@ -33,7 +35,25 @@ export default function DetalheBeneficiario() {
           Voltar
         </Button>
         <UserAttention matricula={matricula} />
+        
+        
         <DetailBeneficiary matricula={matricula} />
+        
+        {/* Botão para abrir modal de alertas */}
+        <Box sx={{ mt: 2, mb: 2 }}>
+          <Button 
+            variant="contained" 
+            color="warning"
+            onClick={() => setMostrarModalAlertas(true)}
+            sx={{ mr: 2 }}
+          >
+            Ver Alertas do Beneficiário
+          </Button>
+          <Typography variant="body2" color="text.secondary" component="span">
+            (Matrícula: {matricula})
+          </Typography>
+        </Box>
+        
         <Protocols matricula={matricula} />
         <Box sx={{ mt: 4 }}>
           <GuiaListaComponent
@@ -49,6 +69,15 @@ export default function DetalheBeneficiario() {
           matricula={matricula}
         />
         <Letters />
+        
+        {/* Modal de Alertas */}
+        <AlertaComponent
+          matricula={matricula}
+          titulo="Alertas do Beneficiário"
+          mostrarModal={mostrarModalAlertas}
+          onFecharModal={() => setMostrarModalAlertas(false)}
+          apiUrl="http://localhost:3333/alertas"
+        />
       </Box>
     </Container>
   );

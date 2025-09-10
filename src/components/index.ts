@@ -10,3 +10,4 @@ export * from './protocols';
 export * from './financial';
 export * from './guides';
 export * from './documents';
+export * from './alerts';
