@@ -2,6 +2,8 @@ import { Grid, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Campo } from "../common";
 
+import{DependentsContract} from './index';
+
 export default function DetailContract(props: { contrato: any }) {
   const [dadosContrato, setDadosContrato] = useState<dadosPessoais | null>(
     null
@@ -143,6 +145,10 @@ export default function DetailContract(props: { contrato: any }) {
                 : ""
             }
           />
+        </Grid>
+        <Grid size={6} ></Grid>
+        <Grid size={6} >
+          <DependentsContract contrato={props.contrato} />
         </Grid>
       </Grid>
     </Paper>
