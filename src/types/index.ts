@@ -54,3 +54,20 @@ export interface GuiaListaComponentProps {
   apiUrl?: string;
 }
 
+// Tipos para OuvidoriaComponent
+export interface Ouvidoria {
+  OCORRENCIA: string;
+  MOTIVO: string;
+  ORIGEM_ATENDIMENTO: string;
+}
+
+export interface OuvidoriaComponentProps {
+  matricula?: string;
+  ouvidorias?: Ouvidoria[];
+  titulo?: string;
+  mostrarModal?: boolean;
+  onFecharModal?: () => void;
+  className?: string;
+  apiUrl?: string;
+}
+

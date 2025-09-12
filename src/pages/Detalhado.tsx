@@ -49,7 +49,7 @@ export default function DetalheBeneficiario() {
             onClick={() => setMostrarModalAlertas(true)}
             sx={{ mr: 2 }}
           >
-            Ver Alertas do Beneficiário
+            Ver Alertas e Ouvidoria
           </Button>
           <Typography variant="body2" color="text.secondary" component="span">
             (Matrícula: {matricula})
@@ -71,13 +71,14 @@ export default function DetalheBeneficiario() {
         <Financial contrato={localStorage.contrato} matricula={matricula} />
         <Letters />
         
-        {/* Modal de Alertas */}
+        {/* Modal de Alertas e Ouvidoria */}
         <AlertaComponent
           matricula={matricula}
-          titulo="Alertas do Beneficiário"
+          titulo="Alertas e Ouvidoria do Beneficiário"
           mostrarModal={mostrarModalAlertas}
           onFecharModal={() => setMostrarModalAlertas(false)}
           apiUrl="http://localhost:3333/alertas"
+          ouvidoriaApiUrl="http://localhost:3333/ouvidoria"
         />
       </Box>
     </Container>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import OuvidoriaComponent from './OuvidoriaComponent';
 
 interface Alerta {
   data: string;
@@ -14,6 +15,7 @@ interface AlertaComponentProps {
   onFecharModal?: () => void;
   className?: string;
   apiUrl?: string;
+  ouvidoriaApiUrl?: string;
 }
 
 const AlertaComponentSimple: React.FC<AlertaComponentProps> = ({ 
@@ -23,11 +25,13 @@ const AlertaComponentSimple: React.FC<AlertaComponentProps> = ({
   mostrarModal = false, 
   onFecharModal = () => {},
   className = "",
-  apiUrl = "http://localhost:3333/alertas"
+  apiUrl = "http://localhost:3333/alertas",
+  ouvidoriaApiUrl = "http://localhost:3333/ouvidoria"
 }) => {
   const [alertas, setAlertas] = useState<Alerta[]>(alertasProp);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [abaAtiva, setAbaAtiva] = useState<'alertas' | 'ouvidoria'>('alertas');
 
   // Buscar alertas da API se matrícula for fornecida e válida
   useEffect(() => {
@@ -93,20 +97,6 @@ const AlertaComponentSimple: React.FC<AlertaComponentProps> = ({
   // Se não é modal, não renderiza nada
   if (!mostrarModal) {
     return null;
-  }
-
-  // Se não há alertas, não renderiza nada
-  if (!alertas || alertas.length === 0) {
-    if (loading) {
-      return <div style={{ padding: '20px', textAlign: 'center' }}>Carregando alertas...</div>;
-    }
-    if (error) {
-      return <div style={{ padding: '20px', color: 'red' }}>Erro ao carregar alertas: {error}</div>;
-    }
-    if (!matricula || matricula === '-2' || matricula === 'undefined' || matricula.length <= 3) {
-      return <div style={{ padding: '20px', color: '#666' }}>Matrícula inválida para buscar alertas</div>;
-    }
-    return <div style={{ padding: '20px' }}>Nenhum alerta encontrado</div>;
   }
 
   const renderAlerta = (alerta: Alerta, index: number) => (
@@ -204,90 +194,140 @@ const AlertaComponentSimple: React.FC<AlertaComponentProps> = ({
             </button>
           </div>
           
+          {/* Abas */}
+          <div style={{
+            display: 'flex',
+            borderBottom: '1px solid #e0e0e0',
+            backgroundColor: '#f8f9fa'
+          }}>
+            <button
+              style={{
+                flex: 1,
+                padding: '12px 20px',
+                border: 'none',
+                backgroundColor: abaAtiva === 'alertas' ? '#ff6b35' : 'transparent',
+                color: abaAtiva === 'alertas' ? 'white' : '#666',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                borderBottom: abaAtiva === 'alertas' ? '3px solid #ff6b35' : '3px solid transparent'
+              }}
+              onClick={() => setAbaAtiva('alertas')}
+            >
+              Alertas
+            </button>
+            <button
+              style={{
+                flex: 1,
+                padding: '12px 20px',
+                border: 'none',
+                backgroundColor: abaAtiva === 'ouvidoria' ? '#4a90e2' : 'transparent',
+                color: abaAtiva === 'ouvidoria' ? 'white' : '#666',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                borderBottom: abaAtiva === 'ouvidoria' ? '3px solid #4a90e2' : '3px solid transparent'
+              }}
+              onClick={() => setAbaAtiva('ouvidoria')}
+            >
+              Ouvidoria
+            </button>
+          </div>
+          
           <div style={{ padding: '24px' }}>
-            {loading ? (
-              <div style={{ textAlign: 'center', padding: '40px' }}>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  border: '4px solid #f3f3f3',
-                  borderTop: '4px solid #ff6b35',
-                  borderRadius: '50%',
-                  animation: 'spin 1s linear infinite',
-                  margin: '0 auto 16px'
-                }}></div>
-                <p style={{ color: '#666', margin: 0 }}>Carregando alertas...</p>
-              </div>
-            ) : error ? (
-              <div style={{ 
-                textAlign: 'center', 
-                padding: '40px',
-                color: '#d32f2f',
-                backgroundColor: '#ffebee',
-                borderRadius: '8px',
-                border: '1px solid #ffcdd2'
-              }}>
-                <p style={{ margin: '0 0 8px 0', fontWeight: '500' }}>Erro ao carregar alertas</p>
-                <p style={{ margin: 0, fontSize: '0.9em' }}>{error}</p>
-              </div>
-            ) : alertas.length === 0 ? (
-              <div style={{ 
-                textAlign: 'center', 
-                padding: '40px',
-                color: '#666',
-                backgroundColor: '#f5f5f5',
-                borderRadius: '8px'
-              }}>
-                <p style={{ margin: 0, fontSize: '1.1em' }}>Nenhum alerta encontrado</p>
-                <p style={{ margin: '8px 0 0 0', fontSize: '0.9em' }}>Este beneficiário não possui alertas no momento.</p>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {alertas.map((alerta, index) => (
-                  <div key={index} style={{ 
-                    border: '1px solid #e0e0e0', 
-                    padding: '16px', 
-                    borderRadius: '8px',
-                    backgroundColor: '#fafafa',
-                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-                    transition: 'box-shadow 0.2s'
-                  }}>
-                    <div style={{ display: 'flex', gap: '20px', marginBottom: '12px', flexWrap: 'wrap' }}>
-                      <span style={{ 
-                        fontSize: '0.9em', 
-                        color: '#666',
-                        backgroundColor: '#e3f2fd',
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        fontWeight: '500'
-                      }}>
-                        <strong>Data:</strong> {alerta.data}
-                      </span>
-                      <span style={{ 
-                        fontSize: '0.9em', 
-                        color: '#666',
-                        backgroundColor: '#f3e5f5',
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        fontWeight: '500'
-                      }}>
-                        <strong>Setor:</strong> {alerta.setor}
-                      </span>
-                    </div>
-                    <div style={{ 
-                      fontSize: '1em', 
-                      color: '#333', 
-                      lineHeight: '1.5',
-                      backgroundColor: 'white',
-                      padding: '12px',
-                      borderRadius: '4px',
-                      border: '1px solid #e0e0e0'
+            {abaAtiva === 'alertas' ? (
+              loading ? (
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                  <div style={{
+                    width: '40px',
+                    height: '40px',
+                    border: '4px solid #f3f3f3',
+                    borderTop: '4px solid #ff6b35',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite',
+                    margin: '0 auto 16px'
+                  }}></div>
+                  <p style={{ color: '#666', margin: 0 }}>Carregando alertas...</p>
+                </div>
+              ) : error ? (
+                <div style={{ 
+                  textAlign: 'center', 
+                  padding: '40px',
+                  color: '#666',
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '8px'
+                }}>
+                  <p style={{ margin: 0, fontSize: '1.1em' }}>Beneficiário não possui alertas</p>
+                  <p style={{ margin: '8px 0 0 0', fontSize: '0.9em' }}>Este beneficiário não possui alertas no momento.</p>
+                </div>
+              ) : alertas.length === 0 ? (
+                <div style={{ 
+                  textAlign: 'center', 
+                  padding: '40px',
+                  color: '#666',
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '8px'
+                }}>
+                  <p style={{ margin: 0, fontSize: '1.1em' }}>Beneficiário não possui alertas</p>
+                  <p style={{ margin: '8px 0 0 0', fontSize: '0.9em' }}>Este beneficiário não possui alertas no momento.</p>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {alertas.map((alerta, index) => (
+                    <div key={index} style={{ 
+                      border: '1px solid #e0e0e0', 
+                      padding: '16px', 
+                      borderRadius: '8px',
+                      backgroundColor: '#fafafa',
+                      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+                      transition: 'box-shadow 0.2s'
                     }}>
-                      <strong>Descrição:</strong> {alerta.descricao}
+                      <div style={{ display: 'flex', gap: '20px', marginBottom: '12px', flexWrap: 'wrap' }}>
+                        <span style={{ 
+                          fontSize: '0.9em', 
+                          color: '#666',
+                          backgroundColor: '#e3f2fd',
+                          padding: '4px 8px',
+                          borderRadius: '4px',
+                          fontWeight: '500'
+                        }}>
+                          <strong>Data:</strong> {alerta.data}
+                        </span>
+                        <span style={{ 
+                          fontSize: '0.9em', 
+                          color: '#666',
+                          backgroundColor: '#f3e5f5',
+                          padding: '4px 8px',
+                          borderRadius: '4px',
+                          fontWeight: '500'
+                        }}>
+                          <strong>Setor:</strong> {alerta.setor}
+                        </span>
+                      </div>
+                      <div style={{ 
+                        fontSize: '1em', 
+                        color: '#333', 
+                        lineHeight: '1.5',
+                        backgroundColor: 'white',
+                        padding: '12px',
+                        borderRadius: '4px',
+                        border: '1px solid #e0e0e0'
+                      }}>
+                        <strong>Descrição:</strong> {alerta.descricao}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )
+            ) : (
+              <OuvidoriaComponent
+                matricula={matricula}
+                titulo=""
+                mostrarModal={false}
+                apiUrl={ouvidoriaApiUrl}
+              />
             )}
           </div>
           
