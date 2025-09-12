@@ -1,10 +1,18 @@
-import { Paper, Grid, Typography, Popover, Button, MenuItem } from "@mui/material";
+import {
+  Paper,
+  Grid,
+  Typography,
+  Popover,
+  Button,
+  MenuItem,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { Campo } from "../common";
 
-import {ServiceProgram} from './index'
+import { ServiceProgram } from "./index";
 
 import InfoIcon from "@mui/icons-material/Info";
+import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
 
 export default function DetailBeneficiary(props: { matricula: any }) {
   const [dadosPessoais, setDadosPessoais] = useState<dadosPessoais | null>(
@@ -320,6 +328,10 @@ export default function DetailBeneficiary(props: { matricula: any }) {
           <Grid size={6}>
             <ServiceProgram matricula={props.matricula} />
           </Grid>
+          <Grid size={6}></Grid>
+          <Grid size={3} >
+            <Button variant="contained"><ContactEmergencyIcon /> 2° Via carteirinha</Button>
+          </Grid>
         </Grid>
       </Paper>
       <Popover
@@ -334,9 +346,7 @@ export default function DetailBeneficiary(props: { matricula: any }) {
       >
         <Typography sx={{ p: 2 }}>
           {carencias?.map((b: any, index: number) => (
-            <MenuItem >
-              {b.DS}
-            </MenuItem>
+            <MenuItem>{b.DS}</MenuItem>
           ))}
         </Typography>
       </Popover>

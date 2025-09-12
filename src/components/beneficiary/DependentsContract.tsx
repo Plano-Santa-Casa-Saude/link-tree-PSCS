@@ -2,7 +2,10 @@
 import { useEffect, useState } from "react";
 
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+
 const paginationModel = { page: 0, pageSize: 5 };
 
 export default function DependentsContract(props: { contrato: any }) {
@@ -24,6 +27,16 @@ export default function DependentsContract(props: { contrato: any }) {
       field: "SN_ATIVO",
       headerName: "Ativo",
       width: 80,
+    },
+    {
+      field: "CD_MENSALIDADE",
+      headerName: "Opções",
+      width: 90,
+      renderCell: (params: any) => (
+        <Button>
+          <ContactEmergencyIcon />
+        </Button>
+      ),
     },
   ];
 

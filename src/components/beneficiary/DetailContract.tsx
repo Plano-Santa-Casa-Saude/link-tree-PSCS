@@ -147,7 +147,7 @@ export default function DetailContract(props: { contrato: any }) {
           />
         </Grid>
         <Grid size={6} ></Grid>
-        <Grid size={6} >
+        <Grid size={7} >
           <DependentsContract contrato={props.contrato} />
         </Grid>
       </Grid>
