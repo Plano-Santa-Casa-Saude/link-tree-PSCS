@@ -23,7 +23,7 @@ const OuvidoriaComponent: React.FC<OuvidoriaComponentProps> = ({
   mostrarModal = false, 
   onFecharModal = () => {},
   className = "",
-  apiUrl = "http://localhost:3333/ouvidoria"
+  apiUrl = "http://10.201.0.39:3333/ouvidoria"
 }) => {
   const [ouvidorias, setOuvidorias] = useState<Ouvidoria[]>(ouvidoriasProp);
   const [loading, setLoading] = useState(false);

@@ -25,8 +25,8 @@ const AlertaComponentSimple: React.FC<AlertaComponentProps> = ({
   mostrarModal = false, 
   onFecharModal = () => {},
   className = "",
-  apiUrl = "http://localhost:3333/alertas",
-  ouvidoriaApiUrl = "http://localhost:3333/ouvidoria"
+  apiUrl = "http://10.201.0.39:3333/alertas",
+  ouvidoriaApiUrl = "http://10.201.0.39:3333/ouvidoria"
 }) => {
   const [alertas, setAlertas] = useState<Alerta[]>(alertasProp);
   const [loading, setLoading] = useState(false);

@@ -77,8 +77,8 @@ export default function DetalheBeneficiario() {
           titulo="Alertas e Ouvidoria do Beneficiário"
           mostrarModal={mostrarModalAlertas}
           onFecharModal={() => setMostrarModalAlertas(false)}
-          apiUrl="http://localhost:3333/alertas"
-          ouvidoriaApiUrl="http://localhost:3333/ouvidoria"
+          apiUrl="http://10.201.0.39:3333/alertas"
+          ouvidoriaApiUrl="http://10.201.0.39:3333/ouvidoria"
         />
       </Box>
     </Container>

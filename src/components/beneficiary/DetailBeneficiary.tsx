@@ -113,7 +113,7 @@ export default function DetailBeneficiary(props: { matricula: any }) {
   const buscarCarencia = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3333/zelus/carencias/${props.matricula}`
+        `http://10.201.0.39:3333/zelus/carencias/${props.matricula}`
       );
       const data = await response.json();
       console.log(data);

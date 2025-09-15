@@ -15,13 +15,13 @@ import { DataGrid } from "@mui/x-data-grid";
 //--------------------ICONES------------------------//
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-
+import ReplyIcon from "@mui/icons-material/Reply";
+import AddIcon from "@mui/icons-material/Add";
 //-------------------COMPONENTES---------------------//
-import ProcessProtocol from "./ProcessProtocol";
-import AttachmentsProtocol from "./AttachmentsProtocol";
+import { AttachmentsProtocol, ProtocolForm, ProcessProtocol } from "./index";
+
 //-------------------HOOKERS----------------------//
 import { useEffect, useState } from "react";
-import formatDate from "../../utils/utils";
 //--------------------STYLE---------------------//
 
 const styleModal = {
@@ -42,7 +42,9 @@ function Protocols(props: { matricula: any }) {
   const [loading, setLoading] = useState(false);
   const [rowsProtocolos, setRowsProtocolos] = useState();
   const [openModalProtocolos, setOpenModalProtocolos] = useState(false);
+  const [openModalFormulario, setOpenModalFormulario] = useState(false);
   const [CdProtocolos, setCdProtocolos] = useState("");
+  const [dtTermino, setDtTermino] = useState("");
   const [tabValue, setTabValue] = useState(0);
 
   useEffect(() => {
@@ -53,12 +55,25 @@ function Protocols(props: { matricula: any }) {
 
   //   const handleOpenModalProtocolos = () => setOpen(true);
   const handleCloseModalProtocolos = () => setOpenModalProtocolos(false);
-  const handleOpenModalProtocolos = (cdAtendCallCenter: string) => {
+  const handleOpenModalProtocolos = (
+    cdAtendCallCenter: string,
+    dtTermino: string
+  ) => {
     setCdProtocolos(cdAtendCallCenter);
     setOpenModalProtocolos(true);
+    setDtTermino(dtTermino);
   };
   const handleChangeTab = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
+  };
+
+  const handleOpenModalFormulario = () => {
+    setOpenModalFormulario(true);
+    setOpenModalProtocolos(false);
+  };
+  const handleCloseModalFormulario = () => {
+    setOpenModalFormulario(false);
+    setOpenModalProtocolos(true);
   };
 
   //-----------------------COLUNAS PROTOCOLOS------------------------------//
@@ -177,7 +192,11 @@ function Protocols(props: { matricula: any }) {
       headerName: "Opções",
       width: 90,
       renderCell: (params: any) => (
-        <Button onClick={() => handleOpenModalProtocolos(params.value)}>
+        <Button
+          onClick={() =>
+            handleOpenModalProtocolos(params.value, params.row.DATA_TERMINO)
+          }
+        >
           <RemoveRedEyeIcon />
         </Button>
       ),
@@ -198,8 +217,10 @@ function Protocols(props: { matricula: any }) {
       const protocolosComId = data.protocolos.map((b: any, index: number) => ({
         ...b,
         id: index + 1, // ou `${b.matricula}-${index}`
-        DATA_INICIO: formatDate(b.DATA_INICIO),
-        DATA_TERMINO: formatDate(b.DATA_TERMINO),
+        DATA_INICIO: new Date(b.DATA_INICIO).toLocaleDateString("pt-BR"),
+        DATA_TERMINO: b.DATA_TERMINO
+          ? new Date(b.DATA_TERMINO).toLocaleDateString("pt-BR")
+          : "",
         CD_PROTOCOLO: b.DEMANDA,
       }));
 
@@ -258,13 +279,54 @@ function Protocols(props: { matricula: any }) {
             {/* Conteúdo */}
             <Box sx={{ mt: 2 }}>
               {tabValue === 0 && (
-                <ProcessProtocol cdAtendCallCenter={CdProtocolos} />
+                <>
+                  <ProcessProtocol
+                    dtTermino={dtTermino}
+                    cdAtendCallCenter={CdProtocolos}
+                  />
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={handleOpenModalFormulario}
+                  >
+                    <AddIcon />
+                    Novo tramite
+                  </Button>
+                </>
               )}
               {tabValue === 1 && (
                 <AttachmentsProtocol cdAtendCallCenter={CdProtocolos} />
               )}
             </Box>
           </Container>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openModalFormulario}
+        onClose={handleCloseModalFormulario}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "75vw",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 2,
+            borderRadius: 2,
+            maxHeight: "80vh", // limita altura
+            overflowY: "auto", // ativa scroll
+          }}
+        >
+          <Button onClick={handleCloseModalFormulario}>
+            <ReplyIcon /> Voltar
+          </Button>
+          <ProtocolForm cdAtendCallCenter={CdProtocolos} />
         </Box>
       </Modal>
     </>

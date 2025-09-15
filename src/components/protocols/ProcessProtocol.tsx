@@ -9,7 +9,7 @@ import formatDate from "../../utils/utils";
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-function ProcessProtocol(props: { cdAtendCallCenter: any }) {
+function ProcessProtocol(props: { cdAtendCallCenter: any, dtTermino: any }) {
   const [rowsTramites, setRowsTramites] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,7 @@ function ProcessProtocol(props: { cdAtendCallCenter: any }) {
   //----------------------------COLUNAS TRAMITES--------------------------------//
   const columnsTramites = [
     { field: "CD_ATEND_CALL_CENTER", headerName: "Cd. Tramite", width: 100 },
-    { field: "NM_AUTORIZADOR", headerName: "Nm. Autorizador", width: 260 },
+    { field: "NM_AUTORIZADOR", headerName: "Nm. Autorizador", width: 260},
     { field: "DT_INICIO_TRAMITE", headerName: "Dt. Inicio", width: 140 },
     { field: "DT_FINAL_TRAMITE", headerName: "Dt. Fim", width: 140 },
     {
@@ -69,7 +69,7 @@ function ProcessProtocol(props: { cdAtendCallCenter: any }) {
         ...b,
         id: index + 1, // ou `${b.matricula}-${index}`
         DT_INICIO_TRAMITE: formatDate(b.DT_INICIO_TRAMITE),
-        DT_FINAL_TRAMITE: formatDate(b.DT_FINAL_TRAMITE),
+        DT_FINAL_TRAMITE: b.DT_FINAL_TRAMITE?new Date(b.DT_FINAL_TRAMITE).toLocaleDateString("pt-BR") : 'Aberto',
       }));
 
       // O array está em "tramites"
@@ -83,6 +83,7 @@ function ProcessProtocol(props: { cdAtendCallCenter: any }) {
   };
 
   return (
+    
     <DataGrid
       rows={rowsTramites}
       columns={columnsTramites}
