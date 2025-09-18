@@ -13,6 +13,7 @@ import {
   AddressBeneficiary,
   DetailContract,
   AlertaComponent,
+  DashboardMetricas,
 } from "../components";
 
 export default function DetalheBeneficiario() {
@@ -38,6 +39,11 @@ export default function DetalheBeneficiario() {
         </Button>
         <UserAttention matricula={matricula} />
         
+        {/* Dashboard de Métricas */}
+        <DashboardMetricas 
+          matricula={matricula} 
+          apiUrl="http://10.201.0.39:3333/metricas"
+        />
         
         <DetailBeneficiary matricula={matricula} />
         
