@@ -39,16 +39,17 @@ const columns = [
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-export default function FiltroBeneficiario() {
+export default function BeneficiaryFilters() {
   const [rows, setRows] = useState();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const buscarBeneficiarios = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`http://10.201.0.39:3333/beneficiarios/all`);
 
       const data = await response.json();
-      console.log(data); // aqui você vê o objeto completo: { total, page, limit, ... }
 
       const beneficiariosComId = data.beneficiarios.map(
         (b: any, index: number) => ({
@@ -62,6 +63,8 @@ export default function FiltroBeneficiario() {
     } catch (error) {
       console.error("Erro ao buscar os beneficiarios:", error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -117,11 +120,12 @@ export default function FiltroBeneficiario() {
 
       <Container sx={{ mt: 4 }}>
         <DataGrid
-          rows={rows}
+          rows={rows || []}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
           sx={{ border: 0 }}
+          loading={loading}
           onCellDoubleClick={(params) => {
             const matricula = params.row.matricula
             navigate(`/Detalhado/${matricula}`);
