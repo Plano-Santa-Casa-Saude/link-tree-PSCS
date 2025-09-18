@@ -44,7 +44,7 @@ const DashboardMetricas: React.FC<DashboardMetricasProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (matricula && matricula !== '-2' && matricula !== 'undefined' && matricula.length > 3) {
+    if (matricula && matricula !== 'undefined' && matricula.length > 0) {
       buscarMetricas();
     }
   }, [matricula]);
