@@ -34,6 +34,7 @@ interface MetricasBeneficiario {
 
 interface DashboardMetricasProps {
   matricula?: string;
+  apiUrl?: string;
 }
 
 const DashboardMetricas: React.FC<DashboardMetricasProps> = ({
@@ -174,7 +175,7 @@ const DashboardMetricas: React.FC<DashboardMetricasProps> = ({
 
       <Grid container spacing={3}>
         {/* Card de Protocolos */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{xs:12, sm:6, md:3}}>
           <Card sx={{ 
             height: '100%',
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -198,7 +199,7 @@ const DashboardMetricas: React.FC<DashboardMetricasProps> = ({
         </Grid>
 
         {/* Card de Protocolos de Ouvidoria */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{xs:12, sm:6, md:3}}>
           <Card sx={{ 
             height: '100%',
             background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
@@ -222,7 +223,7 @@ const DashboardMetricas: React.FC<DashboardMetricasProps> = ({
         </Grid>
 
         {/* Card de NIPS */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{xs:12, sm:6, md:3}}>
           <Card sx={{ 
             height: '100%',
             background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
@@ -246,7 +247,7 @@ const DashboardMetricas: React.FC<DashboardMetricasProps> = ({
         </Grid>
 
         {/* Card de Protocolos do Mês */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{xs:12, sm:6, md:3}}>
           <Card sx={{ 
             height: '100%',
             background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
@@ -270,7 +271,7 @@ const DashboardMetricas: React.FC<DashboardMetricasProps> = ({
         </Grid>
 
         {/* Card de Sinistralidade */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{xs:12, md:6}}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Box display="flex" alignItems="center" mb={2}>
@@ -296,7 +297,7 @@ const DashboardMetricas: React.FC<DashboardMetricasProps> = ({
         </Grid>
 
         {/* Card de Status Financeiro */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{xs:12, md:6}}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Box display="flex" alignItems="center" mb={2}>
@@ -333,12 +334,12 @@ const DashboardMetricas: React.FC<DashboardMetricasProps> = ({
         </Typography>
         <Divider sx={{ mb: 2 }} />
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{xs:12, sm:6}}>
             <Typography variant="body2" color="text.secondary">
               <strong>Matrícula:</strong> {metricas.matricula}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{xs:12, sm:6}}>
             <Typography variant="body2" color="text.secondary">
               <strong>Última atualização:</strong> {new Date().toLocaleDateString('pt-BR')}
             </Typography>

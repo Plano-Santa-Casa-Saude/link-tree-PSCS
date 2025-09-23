@@ -75,7 +75,7 @@ export default function DetalheBeneficiario() {
           />
         </Box>
         <Financial contrato={localStorage.contrato} matricula={matricula} />
-        <Letters />
+        <Letters contrato={localStorage.contrato} matricula={matricula} />
         
         {/* Modal de Alertas e Ouvidoria */}
         <AlertaComponent
