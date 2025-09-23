@@ -132,7 +132,7 @@ export default function PdfQuitacaoDividas(props: {
                   height: 52,
                   alignSelf: "flex-start",
                 }}
-                src="/public/images/logo_scs.png"
+                src="/images/logo_scs.png"
               />
               <View style={{ width: "45%", marginTop: 10 }}>
                 <Text style={{ fontSize: 10, fontWeight: "bold" }}>

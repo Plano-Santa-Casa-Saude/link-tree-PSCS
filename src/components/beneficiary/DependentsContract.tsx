@@ -2,15 +2,38 @@
 import { useEffect, useState } from "react";
 
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
 
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 
+import { PdfCarteirinha } from "./index";
+
 const paginationModel = { page: 0, pageSize: 5 };
+
+const styleModalPdf = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  border: "none",
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function DependentsContract(props: { contrato: any }) {
   const [rowsDependents, setRowsDependents] = useState();
   const [loading, setLoading] = useState(false);
+
+  const [openModalPdfCarteirinhaD, setopenModalPdfCarteirinhaD] = useState(false);
+  const [matriculaDependente, setMatriculaDependente] = useState();
+
+  function handleOpenModalPdfCarteirinhaD(matricula: any) {
+    setopenModalPdfCarteirinhaD(true);
+    setMatriculaDependente(matricula);
+  }
+  const handleCloseModalPdfCarteirinhaD = () =>
+    setopenModalPdfCarteirinhaD(false);
 
   useEffect(() => {
     if (props.contrato) {
@@ -29,11 +52,11 @@ export default function DependentsContract(props: { contrato: any }) {
       width: 80,
     },
     {
-      field: "CD_MENSALIDADE",
+      field: "MATRICULA",
       headerName: "Opções",
       width: 90,
       renderCell: (params: any) => (
-        <Button>
+        <Button onClick={() =>handleOpenModalPdfCarteirinhaD(params?.value)} >
           <ContactEmergencyIcon />
         </Button>
       ),
@@ -54,6 +77,7 @@ export default function DependentsContract(props: { contrato: any }) {
       const DependentsTratado = data.Dependentes.map(
         (b: any, index: number) => ({
           ...b,
+          MATRICULA: b.CD_MATRICULA,
           id: index + 1, // ou `${b.matricula}-${index}`
         })
       );
@@ -83,6 +107,16 @@ export default function DependentsContract(props: { contrato: any }) {
           loading={loading}
         />
       </Box>
+      <Modal
+        open={openModalPdfCarteirinhaD}
+        onClose={handleCloseModalPdfCarteirinhaD}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{ ...styleModalPdf, width: "70%", height: "90%" }}>
+          <PdfCarteirinha matricula={matriculaDependente} />
+        </Box>
+      </Modal>
     </>
   );
 }
