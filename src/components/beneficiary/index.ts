@@ -5,3 +5,4 @@ export { default as AddressBeneficiary} from './AddressBeneficiary';
 export { default as DetailContract} from './DetailContract';
 export { default as ServiceProgram} from './ServiceProgram';
 export { default as DependentsContract} from './DependentsContract';
+export { default as PdfCarteirinha} from './PdfCarteirinha';

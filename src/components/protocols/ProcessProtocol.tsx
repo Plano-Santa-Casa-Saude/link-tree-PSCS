@@ -1,5 +1,5 @@
 //-------------------MUI----------------------//
-import { Tooltip, IconButton } from "@mui/material";
+import { Tooltip, IconButton, Paper } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 //--------------------ICONES------------------------//
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
@@ -9,7 +9,7 @@ import formatDate from "../../utils/utils";
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-function ProcessProtocol(props: { cdAtendCallCenter: any, dtTermino: any }) {
+function ProcessProtocol(props: { cdAtendCallCenter: any; dtTermino: any }) {
   const [rowsTramites, setRowsTramites] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,7 @@ function ProcessProtocol(props: { cdAtendCallCenter: any, dtTermino: any }) {
   //----------------------------COLUNAS TRAMITES--------------------------------//
   const columnsTramites = [
     { field: "CD_ATEND_CALL_CENTER", headerName: "Cd. Tramite", width: 100 },
-    { field: "NM_AUTORIZADOR", headerName: "Nm. Autorizador", width: 260},
+    { field: "NM_AUTORIZADOR", headerName: "Nm. Autorizador", width: 260 },
     { field: "DT_INICIO_TRAMITE", headerName: "Dt. Inicio", width: 140 },
     { field: "DT_FINAL_TRAMITE", headerName: "Dt. Fim", width: 140 },
     {
@@ -69,7 +69,9 @@ function ProcessProtocol(props: { cdAtendCallCenter: any, dtTermino: any }) {
         ...b,
         id: index + 1, // ou `${b.matricula}-${index}`
         DT_INICIO_TRAMITE: formatDate(b.DT_INICIO_TRAMITE),
-        DT_FINAL_TRAMITE: b.DT_FINAL_TRAMITE?new Date(b.DT_FINAL_TRAMITE).toLocaleDateString("pt-BR") : 'Aberto',
+        DT_FINAL_TRAMITE: b.DT_FINAL_TRAMITE
+          ? new Date(b.DT_FINAL_TRAMITE).toLocaleDateString("pt-BR")
+          : "Aberto",
       }));
 
       // O array está em "tramites"
@@ -83,15 +85,16 @@ function ProcessProtocol(props: { cdAtendCallCenter: any, dtTermino: any }) {
   };
 
   return (
-    
-    <DataGrid
-      rows={rowsTramites}
-      columns={columnsTramites}
-      initialState={{ pagination: { paginationModel } }}
-      pageSizeOptions={[5, 10]}
-      sx={{ border: 0 }}
-      loading={loading}
-    />
+    <Paper elevation={5} sx={{ p: 2 }}>
+      <DataGrid
+        rows={rowsTramites}
+        columns={columnsTramites}
+        initialState={{ pagination: { paginationModel } }}
+        pageSizeOptions={[5, 10]}
+        sx={{ border: 0 }}
+        loading={loading}
+      />
+    </Paper>
   );
 }
 

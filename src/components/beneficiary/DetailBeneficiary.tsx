@@ -5,14 +5,28 @@ import {
   Popover,
   Button,
   MenuItem,
+  Modal,
+  Box,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Campo } from "../common";
 
 import { ServiceProgram } from "./index";
+import { PdfCarteirinha } from "./index";
 
 import InfoIcon from "@mui/icons-material/Info";
-import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+
+const styleModalPdf = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  border: "none",
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function DetailBeneficiary(props: { matricula: any }) {
   const [dadosPessoais, setDadosPessoais] = useState<dadosPessoais | null>(
@@ -23,6 +37,11 @@ export default function DetailBeneficiary(props: { matricula: any }) {
   const [SNcarencias, setSNCarencias] = useState(0);
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const [openModalPdfCarteirinha, setopenModalPdfCarteirinha] = useState(false)
+
+  const handleOpenModalPdfCarteirinha = () => setopenModalPdfCarteirinha(true)
+  const handleCloseModalPdfCarteirinha = () => setopenModalPdfCarteirinha(false)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -329,8 +348,10 @@ export default function DetailBeneficiary(props: { matricula: any }) {
             <ServiceProgram matricula={props.matricula} />
           </Grid>
           <Grid size={6}></Grid>
-          <Grid size={3} >
-            <Button variant="contained"><ContactEmergencyIcon /> 2° Via carteirinha</Button>
+          <Grid size={3}>
+            <Button variant="contained" onClick={handleOpenModalPdfCarteirinha} >
+              <ContactEmergencyIcon /> 2° Via carteirinha
+            </Button>
           </Grid>
         </Grid>
       </Paper>
@@ -345,11 +366,21 @@ export default function DetailBeneficiary(props: { matricula: any }) {
         }}
       >
         <Typography sx={{ p: 2 }}>
-          {carencias?.map((b: any, index: number) => (
+          {carencias?.map((b: any) => (
             <MenuItem>{b.DS}</MenuItem>
           ))}
         </Typography>
       </Popover>
+      <Modal
+        open={openModalPdfCarteirinha}
+        onClose={handleCloseModalPdfCarteirinha}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{ ...styleModalPdf, width: "70%", height: "90%" }}>
+          <PdfCarteirinha matricula={props.matricula} />
+        </Box>
+      </Modal>
     </>
   );
 }
