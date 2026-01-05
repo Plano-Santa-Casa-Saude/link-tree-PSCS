@@ -38,19 +38,16 @@ export default function DetalheBeneficiario() {
           Voltar
         </Button>
         <UserAttention matricula={matricula} />
-        
         {/* Dashboard de Métricas */}
-        <DashboardMetricas 
-          matricula={matricula} 
+        <DashboardMetricas
+          matricula={matricula}
           apiUrl="http://10.201.0.39:3333/metricas"
         />
-        
         <DetailBeneficiary matricula={matricula} />
-        
         {/* Botão para abrir modal de alertas */}
         <Box sx={{ mt: 2, mb: 2 }}>
-          <Button 
-            variant="contained" 
+          <Button
+            variant="contained"
             color="warning"
             onClick={() => setMostrarModalAlertas(true)}
             sx={{ mr: 2 }}
@@ -61,22 +58,12 @@ export default function DetalheBeneficiario() {
             (Matrícula: {matricula})
           </Typography>
         </Box>
-        
         <AddressBeneficiary matricula={matricula} />
         <DetailContract contrato={localStorage.contrato} />
         <Protocols matricula={matricula} />
-        <Box sx={{ mt: 4 }}>
-          <GuiaListaComponent
-            matricula={matricula || ""}
-            onGuiaClick={(_nrGuia) => {
-              // Aqui você pode implementar a navegação ou modal para detalhes da guia
-            }}
-            apiUrl="http://10.201.0.39:3333/guia"
-          />
-        </Box>
+        <GuiaListaComponent matricula={matricula || ""} />
         <Financial contrato={localStorage.contrato} matricula={matricula} />
         <Letters contrato={localStorage.contrato} matricula={matricula} />
-        
         {/* Modal de Alertas e Ouvidoria */}
         <AlertaComponent
           matricula={matricula}

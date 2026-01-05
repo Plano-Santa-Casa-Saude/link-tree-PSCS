@@ -127,7 +127,7 @@ export default function PdfCartaPermanencia(props: { matricula: any }) {
                 margin: 10,
                 alignSelf: "flex-end",
               }}
-              src="/public/images/logo_scs.png"
+              src="/images/logo_scs.png"
             />
             <View>
               <Text style={styles.titulo}>DECLARAÇÃO DE PERMANÊNCIA</Text>

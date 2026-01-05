@@ -1,467 +1,213 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import './GuiaListaComponent.css';
+import {
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Modal,
+  Paper,
+  Tab,
+  Tabs,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { useState, useEffect } from "react";
+import formatDate from "../../utils/utils";
+//--------------------ICONES------------------------//
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import ReplyIcon from "@mui/icons-material/Reply";
 
-// Tipos para o componente
-interface Guia {
-  NR_GUIA: string;
-  NR_TRANSACAO: string;
-  STATUS_GUIA: string;
-  TIPO_GUIA: string;
-  DT_EMISSAO: string;
-  DIAS_CORRIDOS: number;
-  DT_VENCIMENTO: string;
-  CD_MATRICULA: string;
-  NM_SEGURADO: string;
-  DS_ESPECIALIDADE: string;
-  NM_PRESTADOR_SOL: string;
-  NM_AUTORIZADOR: string;
-  DS_DEPTO_OPERADORA: string;
-  PRAZO: string;
-  NIVEL: string;
-  NR_GUIA_TEM: string;
-  DS_OBSERVACAO?: string;
-}
+import { DataGrid } from "@mui/x-data-grid";
+import { GuideProcedures, GuideOccurrences, GuideLocks, GuideAttachment } from "./index";
 
-interface Paginacao {
-  paginaAtual: number;
-  totalPaginas: number;
-  totalRegistros: number;
-}
+const paginationModel = { page: 0, pageSize: 5 };
 
-interface GuiaListaComponentProps {
-  matricula: string;
-  onGuiaClick?: (nrGuia: string) => void;
-  apiUrl?: string;
-}
+export default function GuiaListaComponent(props: { matricula: any }) {
+  const [rowsGuias, setRowsGuias] = useState();
+  const [loading, setLoading] = useState(false);
 
-const GuiaListaComponent: React.FC<GuiaListaComponentProps> = ({ 
-  matricula, 
-  onGuiaClick,
-  apiUrl = 'http://10.201.0.39:3333/guia'
-}) => {
-  // Estados locais
-  const [guias, setGuias] = useState<Guia[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [paginacao, setPaginacao] = useState<Paginacao>({
-    paginaAtual: 1,
-    totalPaginas: 1,
-    totalRegistros: 0
-  });
-  const [modalObservacao, setModalObservacao] = useState<{ isOpen: boolean; observacao: string }>({
-    isOpen: false,
-    observacao: ''
-  });
+  const [openModalGuia, setOpenModalGuia] = useState(false);
 
-  // Cores dos status
-  const coresStatus: Record<string, string> = {
-    'Negado': '#ff0000',
-    'Cancelada': '#ff0000',
-    'Em Analise': '#cdcccc',
-    'Autorizado Parcialmente': '#fcaf42',
-    'Autorizado': '#92d050'
+  const [guiaModal, setGuiaModal] = useState(null);
+
+  const [tabValue, setTabValue] = useState(0);
+
+  useEffect(() => {
+    if (props.matricula) {
+      buscarGuias();
+    }
+  }, [props.matricula]);
+
+  const handleOpenModalProtocolos = (guia: any) => {
+    setOpenModalGuia(true);
+    setGuiaModal(guia);
   };
 
-  // Função para formatar data no padrão brasileiro (dd/mm/aaaa)
-  // Suporta formatos: ISO (2024-01-15), dd-mm-aaaa (15-01-2024), dd/mm/aaaa (15/01/2024)
-  const formatarData = useCallback((data: string): string => {
-    if (!data || data.trim() === '') return '';
-    
-    try {
-      // Remove espaços em branco
-      const dataLimpa = data.trim();
-      
-      // Se a data já está no formato dd/mm/aaaa, retorna como está
-      if (dataLimpa.includes('/') && dataLimpa.length >= 8) {
-        return dataLimpa;
-      }
-      
-      // Se a data está no formato ISO (aaaa-mm-dd) ou similar
-      let dataObj: Date;
-      
-      // Tenta diferentes formatos de data
-      if (dataLimpa.includes('-')) {
-        // Formato ISO: aaaa-mm-dd ou dd-mm-aaaa
-        const partes = dataLimpa.split('-');
-        if (partes.length === 3) {
-          // Se o primeiro elemento tem 4 dígitos, é formato ISO
-          if (partes[0].length === 4) {
-            dataObj = new Date(dataLimpa);
-          } else {
-            // Formato dd-mm-aaaa, converte para ISO
-            dataObj = new Date(`${partes[2]}-${partes[1]}-${partes[0]}`);
+  const handleCloseModalGuia = () => {
+    setOpenModalGuia(false);
+  };
+
+  const handleChangeTab = (_event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
+
+  const columnsGuias = [
+    { field: "NR_GUIA", headerName: "Nr. Guia", width: 100 },
+    { field: "NR_TRANSACAO", headerName: "Nr. Transação", width: 150 },
+    { field: "STATUS_GUIA", headerName: "Status", width: 140 },
+    { field: "TIPO_GUIA", headerName: "Tipo Guia", width: 120 },
+    { field: "DT_EMISSAO", headerName: "Dt. Emissão", width: 120 },
+    { field: "TEMPO_EM_ABERTO", headerName: "Dias Corridos", width: 200 },
+    { field: "DT_VENCIMENTO", headerName: "Dt. Vencimento", width: 140 },
+    { field: "CD_MATRICULA", headerName: "Matrícula", width: 140 },
+    { field: "NM_SEGURADO", headerName: "Nm. Beneficiario", width: 200 },
+    { field: "DS_ESPECIALIDADE", headerName: "Especialidade", width: 140 },
+    {
+      field: "PRESTADOR_EXECUTOR",
+      headerName: "Prestador Executor",
+      width: 140,
+    },
+    { field: "NM_PRESTADOR_SOL", headerName: "Nome Prestador", width: 140 },
+    { field: "NM_AUTORIZADOR", headerName: "Autorizador", width: 140 },
+    { field: "DS_DEPTO_OPERADORA", headerName: "Setor", width: 140 },
+    { field: "PRAZO", headerName: "Prazo de Auto.", width: 180 },
+    { field: "NIVEL", headerName: "Nível", width: 140 },
+    { field: "NR_GUIA_TEM", headerName: "Guia Tem.", width: 140 },
+    {
+      field: "DS_OBSERVACAO",
+      headerName: "Obervações",
+      width: 150,
+      renderCell: (params: any) => (
+        <Tooltip
+          placement="left-start"
+          title={
+            <>
+              {String(params.value)
+                .split("\n")
+                .map((linha, i) => (
+                  <div key={i}>{linha}</div>
+                ))}
+            </>
           }
-        } else {
-          dataObj = new Date(dataLimpa);
-        }
-      } else {
-        dataObj = new Date(dataLimpa);
-      }
-      
-      // Verifica se a data é válida
-      if (isNaN(dataObj.getTime())) {
-        return dataLimpa; // Retorna a string original se não conseguir converter
-      }
-      
-      // Formata para dd/mm/aaaa
-      const dia = dataObj.getDate().toString().padStart(2, '0');
-      const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
-      const ano = dataObj.getFullYear();
-      
-      return `${dia}/${mes}/${ano}`;
-    } catch (error) {
-      console.warn('Erro ao formatar data:', data, error);
-      return data; // Retorna a string original em caso de erro
-    }
-  }, []);
+        >
+          <IconButton>
+            <ChatBubbleIcon
+              sx={{
+                color: params.value ? "blue" : "grey",
+                cursor: params.value ? "pointer" : "default",
+              }}
+            />
+          </IconButton>
+        </Tooltip>
+      ),
+    },
+    {
+      field: "DETALHE_GUIA",
+      headerName: "Opções",
+      width: 90,
+      renderCell: (params: any) => (
+        <Button onClick={() => handleOpenModalProtocolos(params.value)}>
+          <RemoveRedEyeIcon />
+        </Button>
+      ),
+    },
+  ];
 
-
-  // Buscar guias da API
-  const buscarGuias = useCallback(async (pagina: number = 1): Promise<void> => {
-    if (!matricula) return;
-    
+  const buscarGuias = async () => {
     setLoading(true);
-    setError(null);
-    
     try {
-      const response = await fetch(`${apiUrl}/${matricula}?pagina=${pagina}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // Timeout de 10 segundos
-        signal: AbortSignal.timeout(10000)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
-      }
-      
+      const response = await fetch(
+        `http://10.201.0.39:3333/guia/${props.matricula}`
+      );
+
       const data = await response.json();
-      
-      setGuias(data.guia || []);
-      setPaginacao({
-        paginaAtual: data.paginaAtual || 1,
-        totalPaginas: data.totalPaginas || 1,
-        totalRegistros: data.totalRegistros || 0
-      });
-    } catch (err) {
-      console.error('Erro ao buscar guias:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido ao buscar guias');
-      setGuias([]);
-      setPaginacao({
-        paginaAtual: 1,
-        totalPaginas: 1,
-        totalRegistros: 0
-      });
+
+      const GuiasTratados = data.guia.map((b: any, index: number) => ({
+        ...b,
+        id: index + 1,
+        DT_EMISSAO: new Date(b.DT_EMISSAO).toLocaleDateString("pt-BR"),
+        DT_VENCIMENTO: new Date(b.DT_VENCIMENTO).toLocaleDateString("pt-BR"),
+        PRESTADOR_EXECUTOR: b.NM_PRESTADOR_SOL,
+        DETALHE_GUIA: b.NR_GUIA,
+      }));
+
+      // O array está em "tramites"
+      setRowsGuias(GuiasTratados);
+    } catch (error) {
+      console.error("Erro ao buscar as guias:", error);
+      throw error;
     } finally {
       setLoading(false);
     }
-  }, [matricula, apiUrl]);
-
-  // Efeito para buscar guias quando matrícula mudar
-  useEffect(() => {
-    if (matricula) {
-      buscarGuias(1);
-    }
-  }, [matricula, buscarGuias]);
-
-  // Manipular clique em guia
-  const handleGuiaClick = useCallback((nrGuia: string): void => {
-    onGuiaClick?.(nrGuia);
-  }, [onGuiaClick]);
-
-  // Manipular clique em observações
-  const handleObservacaoClick = useCallback((observacao: string): void => {
-    setModalObservacao({ isOpen: true, observacao });
-  }, []);
-
-  // Fechar modal de observações
-  const closeModalObservacao = useCallback((): void => {
-    setModalObservacao({ isOpen: false, observacao: '' });
-  }, []);
-
-  // Status que ocultam o número da guia
-  const statusOcultos = useMemo(() => ['Negado', 'Em Analise', 'Cancelada'], []);
-
-  // Renderizar número da guia (oculto para alguns status)
-  const renderNumeroGuia = useCallback((guia: Guia): React.ReactNode => {
-    if (statusOcultos.includes(guia.STATUS_GUIA)) {
-      return <div className="guia-oculta" aria-label="Número da guia oculto"></div>;
-    }
-    return guia.NR_GUIA;
-  }, [statusOcultos]);
-
-  // Renderizar botão de observações
-  const renderObservacoes = useCallback((guia: Guia): React.ReactNode => {
-    const hasObservacao = Boolean(guia.DS_OBSERVACAO);
-    
-    return (
-      <button 
-        className="btn btn-primary btn-sm"
-        title={hasObservacao ? "Ver observações" : "Sem observações"}
-        onClick={() => hasObservacao && handleObservacaoClick(guia.DS_OBSERVACAO!)}
-        disabled={!hasObservacao}
-        aria-label={hasObservacao ? "Ver observações" : "Sem observações"}
-      >
-        <i className="fas fa-comment"></i>
-      </button>
-    );
-  }, [handleObservacaoClick]);
-
-
-  // Renderizar paginação
-  const renderPaginacao = useMemo(() => {
-    if (paginacao.totalPaginas <= 1) return null;
-
-    const paginas: React.ReactNode[] = [];
-    const { paginaAtual, totalPaginas } = paginacao;
-
-    for (let i = 1; i <= totalPaginas; i++) {
-      if (i === 1 || i === totalPaginas || (i < paginaAtual + 10 && i > paginaAtual - 10)) {
-        if (i === totalPaginas && !(totalPaginas < paginaAtual + 10 && totalPaginas > paginaAtual - 10)) {
-          paginas.push(<span key="dots1">...</span>);
-        }
-
-        paginas.push(
-          <button
-            key={i}
-            className={`btn btn-primary ${i === paginaAtual ? 'active' : ''}`}
-            onClick={() => buscarGuias(i)}
-          >
-            {i}
-          </button>
-        );
-
-        if (i === 1 && !(1 < paginaAtual + 10 && 1 > paginaAtual - 10)) {
-          paginas.push(<span key="dots2">...</span>);
-        }
-      }
-    }
-
-    return <div className="pagination">{paginas}</div>;
-  }, [paginacao, buscarGuias]);
-
-  if (!matricula) {
-    return (
-      <div className="alert alert-warning" role="alert">
-        <i className="fas fa-exclamation-triangle me-2"></i>
-        Matrícula não informada
-      </div>
-    );
-  }
+  };
 
   return (
-    <div className="guia-lista-container">
-
-      {/* Tabela de Guias */}
-      <div className="table-responsive" style={{ maxHeight: '35vh', overflowX: 'auto' }}>
-        <table 
-          className="table table-hover" 
-          style={{ whiteSpace: 'nowrap' }}
-          role="table"
-          aria-label="Lista de guias médicas"
-        >
-          <thead>
-            <tr>
-              <th className="align-middle text-center sticky-header" scope="col">Nr. Guia</th>
-              <th className="align-middle text-center sticky-header" scope="col">Nr. Transação</th>
-              <th className="align-middle text-center sticky-header" scope="col">Status Guia</th>
-              <th className="align-middle text-center sticky-header" scope="col">Tipo Guia</th>
-              <th className="align-middle text-center sticky-header" scope="col">Dt. Emissão</th>
-              <th className="align-middle text-center sticky-header" scope="col">Dias Corridos</th>
-              <th className="align-middle text-center sticky-header" scope="col">Dt. Vencimento</th>
-              <th className="align-middle text-center sticky-header" scope="col">Matrícula</th>
-              <th className="align-middle text-center sticky-header" scope="col">Nome Beneficiário</th>
-              <th className="align-middle text-center sticky-header" scope="col">Especialidade</th>
-              <th className="align-middle text-center sticky-header" scope="col">Prestador Executor</th>
-              <th className="align-middle text-center sticky-header" scope="col">Nome Prestador</th>
-              <th className="align-middle text-center sticky-header" scope="col">Autorizador</th>
-              <th className="align-middle text-center sticky-header" scope="col">Setor</th>
-              <th className="align-middle text-center sticky-header" scope="col">Prazo de Auto.</th>
-              <th className="align-middle text-center sticky-header" scope="col">Nível</th>
-              <th className="align-middle text-center sticky-header" scope="col">Guia Tem.</th>
-              <th className="align-middle text-center sticky-header" scope="col">Observações</th>
-              <th className="align-middle text-center sticky-header" scope="col">Opções</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan={19} className="text-center">
-                  <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Carregando...</span>
-                  </div>
-                </td>
-              </tr>
-            ) : error ? (
-              <tr>
-                <td colSpan={19} className="text-center text-danger">
-                  <i className="fas fa-exclamation-triangle me-2"></i>
-                  Erro ao carregar guias: {error}
-                </td>
-              </tr>
-            ) : guias.length === 0 ? (
-              <tr>
-                <td colSpan={19} className="text-center text-muted">
-                  <i className="fas fa-inbox me-2"></i>
-                  Nenhuma guia encontrada
-                </td>
-              </tr>
-            ) : (
-              guias.map((guia: Guia, index: number) => (
-                <tr key={`${guia.NR_GUIA}-${index}`}>
-                  <td className="align-middle text-center">
-                    {renderNumeroGuia(guia)}
-                  </td>
-                  <td className="align-middle text-center">{guia.NR_TRANSACAO}</td>
-                  <td 
-                    className="align-middle text-center"
-                    style={{ 
-                      backgroundColor: coresStatus[guia.STATUS_GUIA] || '#ffffff',
-                      border: `1px solid ${coresStatus[guia.STATUS_GUIA] || '#dee2e6'}`
-                    }}
-                  >
-                    {guia.STATUS_GUIA}
-                  </td>
-                  <td className="align-middle text-center">{guia.TIPO_GUIA}</td>
-                  <td className="align-middle text-center date-cell">{formatarData(guia.DT_EMISSAO)}</td>
-                  <td className="align-middle text-center">{guia.DIAS_CORRIDOS}</td>
-                  <td className="align-middle text-center date-cell">{formatarData(guia.DT_VENCIMENTO)}</td>
-                  <td className="align-middle text-center">{guia.CD_MATRICULA}</td>
-                  <td className="align-middle text-center">{guia.NM_SEGURADO}</td>
-                  <td className="align-middle text-center">{guia.DS_ESPECIALIDADE}</td>
-                  <td className="align-middle text-center">{guia.NM_PRESTADOR_SOL}</td>
-                  <td className="align-middle text-center">{guia.NM_PRESTADOR_SOL}</td>
-                  <td className="align-middle text-center">{guia.NM_AUTORIZADOR}</td>
-                  <td className="align-middle text-center">{guia.DS_DEPTO_OPERADORA}</td>
-                  <td className="align-middle text-center">{guia.PRAZO}</td>
-                  <td className="align-middle text-center">{guia.NIVEL}</td>
-                  <td className="align-middle text-center">{guia.NR_GUIA_TEM}</td>
-                  <td className="align-middle text-center">
-                    {renderObservacoes(guia)}
-                  </td>
-                  <td className="align-middle text-center">
-                    <button 
-                      className="btn btn-primary btn-sm"
-                      onClick={() => handleGuiaClick(guia.NR_GUIA)}
-                      title="Ver detalhes"
-                      aria-label={`Ver detalhes da guia ${guia.NR_GUIA}`}
-                    >
-                      <i className="fas fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Paginação */}
-      {renderPaginacao}
-
-      {/* Informações de paginação */}
-      {paginacao.totalRegistros > 0 && (
-        <div className="pagination-info mt-2">
-          <small className="text-muted">
-            Mostrando {((paginacao.paginaAtual - 1) * 15) + 1} a {Math.min(paginacao.paginaAtual * 15, paginacao.totalRegistros)} de {paginacao.totalRegistros} registros
-          </small>
-        </div>
-      )}
-
-      {/* Modal de Observações */}
-      {modalObservacao.isOpen && (
-        <div 
-          className="modal-overlay"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1050,
+    <>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Guias
+        </Typography>
+        <DataGrid
+          rows={rowsGuias}
+          columns={columnsGuias}
+          initialState={{ pagination: { paginationModel } }}
+          pageSizeOptions={[5, 10]}
+          sx={{ border: 0 }}
+          loading={loading}
+        />
+      </Paper>
+      <Modal
+        open={openModalGuia}
+        onClose={handleCloseModalGuia}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "75vw",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 2,
+            borderRadius: 2,
+            maxHeight: "80vh", // limita altura
+            overflowY: "auto", // ativa scroll
           }}
-          onClick={closeModalObservacao}
         >
-          <div 
-            className="modal-content"
-            style={{
-              backgroundColor: 'white',
-              borderRadius: '8px',
-              padding: '0',
-              maxWidth: '500px',
-              width: '90%',
-              maxHeight: '80vh',
-              overflow: 'auto',
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div 
-              className="modal-header"
-              style={{
-                padding: '20px',
-                borderBottom: '1px solid #dee2e6',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
+          <Button onClick={handleCloseModalGuia}>
+            <ReplyIcon /> Voltar
+          </Button>
+          <Typography variant="h5" component="h1" gutterBottom>
+            Guias - {guiaModal}
+          </Typography>
+          <Container sx={{ mt: 4 }}>
+            {/* Abas */}
+            <Tabs
+              value={tabValue}
+              onChange={handleChangeTab}
+              aria-label="abas do modal"
+              textColor="primary"
+              indicatorColor="primary"
             >
-              <h5 
-                className="modal-title"
-                style={{
-                  margin: 0,
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  color: '#495057',
-                }}
-              >
-                Observações da Guia
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={closeModalObservacao}
-                aria-label="Fechar modal"
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  fontSize: '24px',
-                  cursor: 'pointer',
-                  color: '#6c757d',
-                  padding: '0',
-                  width: '30px',
-                  height: '30px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                ×
-              </button>
-            </div>
-            <div 
-              className="modal-body"
-              style={{
-                padding: '20px',
-              }}
-            >
-              <div className="observacao-content">
-                <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>
-                  {modalObservacao.observacao}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+              <Tab label="Procedimentos" />
+              <Tab label="Ocorrências" />
+              <Tab label="Bloqueios" />
+              <Tab label="Anexos" />
+            </Tabs>
 
-export default React.memo(GuiaListaComponent);
+            {/* Conteúdo */}
+            <Box sx={{ mt: 2 }}>
+              {tabValue === 0 && <GuideProcedures guia={guiaModal} />}
+              {tabValue === 1 && <GuideOccurrences guia={guiaModal} />}
+              {tabValue === 2 && <GuideLocks guia={guiaModal} />}
+              {tabValue === 3 && <GuideAttachment guia={guiaModal} />}
+            </Box>
+          </Container>
+        </Box>
+      </Modal>
+    </>
+  );
+}

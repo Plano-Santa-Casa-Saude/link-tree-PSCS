@@ -366,7 +366,7 @@ export default function DetailBeneficiary(props: { matricula: any }) {
         }}
       >
         <Typography sx={{ p: 2 }}>
-          {carencias?.map((b: any, index: number) => (
+          {carencias?.map((b: any) => (
             <MenuItem>{b.DS}</MenuItem>
           ))}
         </Typography>

@@ -93,7 +93,7 @@ export default function PdfCarteirinha(props: { matricula: any }) {
       <PDFViewer width="100%" height="100%">
         <Document
           author="Zelus"
-          title={"Carta de Quitação de Débitos - " + props.matricula}
+          title={"Carteirinha - " + props.matricula}
         >
           <Page size="A4" style={styles.page} orientation="landscape">
             <View
@@ -118,7 +118,7 @@ export default function PdfCarteirinha(props: { matricula: any }) {
                     marginLeft: "45%",
                     marginTop: 5,
                   }}
-                  src="/public/images/ans-black.jpg"
+                  src="/images/ans-black.jpg"
                 />
               </View>
               <View style={{ flexDirection: "row" }}>

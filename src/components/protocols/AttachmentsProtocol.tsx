@@ -1,5 +1,5 @@
 //-------------------MUI----------------------//
-import { Tooltip, IconButton } from "@mui/material";
+import { Tooltip, IconButton, Paper } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 //--------------------ICONES------------------------//
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -83,14 +83,16 @@ function AttachmentsProtocol(props: { cdAtendCallCenter: any }) {
   };
 
   return (
-    <DataGrid
-      rows={rowsAnexos}
-      columns={columnsAnexos}
-      initialState={{ pagination: { paginationModel } }}
-      pageSizeOptions={[5, 10]}
-      sx={{ border: 0 }}
-      loading={loading}
-    />
+    <Paper elevation={5} sx={{ p: 2 }}>
+      <DataGrid
+        rows={rowsAnexos}
+        columns={columnsAnexos}
+        initialState={{ pagination: { paginationModel } }}
+        pageSizeOptions={[5, 10]}
+        sx={{ border: 0 }}
+        loading={loading}
+      />
+    </Paper>
   );
 }
 
